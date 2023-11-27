@@ -1,5 +1,6 @@
 *.mpf
 transcript
 work
-project.cr.mti
+*.cr.mti
 vsim.wlf
+*.bak
