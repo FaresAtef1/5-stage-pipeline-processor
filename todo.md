@@ -3,7 +3,7 @@
 - [ ] Instruction Memory Instance
 - [ ] Protect Memory Instance
 - [ ] I/O Port
-- [ ] Reg File
+- [x] Reg File
 
 2) Arithmetic Functionalities
 - [ ] ALU
