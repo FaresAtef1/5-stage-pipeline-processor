@@ -1,7 +1,7 @@
 1) Storage Functionalities
-- [ ] Data Memory Instance
-- [ ] Instruction Memory Instance
-- [ ] Protect Memory Instance
+- [x] Data Memory Instance
+- [x] Instruction Memory Instance
+- [x] Protect Memory Instance
 - [ ] I/O Port
 - [x] Reg File
 
