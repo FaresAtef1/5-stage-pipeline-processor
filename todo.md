@@ -13,6 +13,6 @@
 3) Decoding Functionalities
 - [ ] Control Unit
 - [x] Forwarding Unit
-- [ ] Hazard Detection Unit
+- [x] Hazard Detection Unit
 - [x] PC Decoder 
 - [ ] ALU Control
