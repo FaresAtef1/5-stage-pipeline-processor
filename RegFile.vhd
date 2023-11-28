@@ -13,29 +13,23 @@ ENTITY RegFile IS
 END RegFile;
 
 ARCHITECTURE ArchRegFile OF RegFile IS
-    type REG_ARRAY is array(7 DOWNTO 0, 31 DOWNTO 0) of STD_LOGIC;
+    TYPE REG_ARRAY IS ARRAY(7 DOWNTO 0) OF STD_LOGIC_VECTOR(31 DOWNTO 0);
     SIGNAL R : REG_ARRAY;
 
-    BEGIN
+BEGIN
     PROCESS (CLK, RESET)
     BEGIN
         IF RESET = '1' THEN
             FOR i IN 0 TO 7 LOOP
-                FOR j IN 0 TO 31 LOOP
-                    R(i,j) <= '0';
-                END LOOP;
+                R(i) <= (OTHERS => '0');
             END LOOP;
             REG1_DATA <= (OTHERS => '0');
             REG2_DATA <= (OTHERS => '0');
         ELSIF RISING_EDGE(CLK) THEN
-            FOR i IN 0 TO 31 LOOP
-                R(to_integer(unsigned(Write_Reg)),i) <=write_data(i);
-            END LOOP;
+            R(to_integer(unsigned(Write_Reg))) <=write_data;
         ELSE
-            FOR i IN 0 TO 31 LOOP
-                Reg1_Data(i) <= R(to_integer(unsigned(Reg1_Num)),i);
-                Reg2_Data(i) <= R(to_integer(unsigned(Reg2_Num)),i);
-            END LOOP;
+            Reg1_Data <= R(to_integer(unsigned(Reg1_Num)));
+            Reg2_Data <= R(to_integer(unsigned(Reg2_Num)));
         END IF; 
     END PROCESS; 
 END ArchRegFile;

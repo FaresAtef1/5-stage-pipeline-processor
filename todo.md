@@ -2,7 +2,7 @@
 - [x] Data Memory Instance
 - [x] Instruction Memory Instance
 - [x] Protect Memory Instance
-- [ ] I/O Port
+- [x] I/O Port
 - [x] Reg File
 
 2) Arithmetic Functionalities

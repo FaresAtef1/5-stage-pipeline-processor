@@ -20,9 +20,6 @@ ENTITY Memory IS
           Read_Data: OUT STD_LOGIC_VECTOR (bus_width-1 DOWNTO 0));
 END Memory;
 
-
-
-
 ARCHITECTURE MemoryArch OF Memory IS 
     TYPE MEM_ARRAY IS ARRAY(2**address_width-1 DOWNTO 0) OF STD_LOGIC_VECTOR(slot_width-1 DOWNTO 0);
     SIGNAL MemoryArray:MEM_ARRAY;
@@ -44,8 +41,5 @@ BEGIN
                 END LOOP wrdata;
             END IF;
         END IF;
-    END PROCESS;
-                
-
+    END PROCESS;             
 END MemoryArch;
-
