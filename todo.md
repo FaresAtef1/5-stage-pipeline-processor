@@ -8,11 +8,11 @@
 2) Arithmetic Functionalities
 - [ ] ALU
 - [ ] PC Adder
-- [ ] Sign Extend
+- [x] Sign Extend
 
 3) Decoding Functionalities
 - [ ] Control Unit
 - [x] Forwarding Unit
 - [ ] Hazard Detection Unit
-- [ ] PC Decoder 
+- [x] PC Decoder 
 - [ ] ALU Control
