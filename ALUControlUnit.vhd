@@ -1,0 +1,45 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+ENTITY ALUControlUnit IS PORT (
+    OpCode : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
+    ALUOP : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
+);
+
+END ALUControlUnit;
+
+ARCHITECTURE ALUControlUnitArch OF ALUControlUnit IS
+BEGIN
+WITH OpCode SELECT
+ALUOP <=
+    "0000" WHEN "00000",
+    "0000" WHEN "00001",
+    "0000" WHEN "00010",
+    "0010" WHEN "00011",
+    "0010" WHEN "00100",
+    "0011" WHEN "00101",
+    "0100" WHEN "00110",
+    "0101" WHEN "00111",
+    "0110" WHEN "01000",
+    "1001" WHEN "01001",
+    "0001" WHEN "01010",
+    "0001" WHEN "01011",
+    "1001" WHEN "01100",
+    "1001" WHEN "01101",
+    "0111" WHEN "10000",
+    "1000" WHEN "10001",
+    "1001" WHEN "10010",
+    "1010" WHEN "10011",
+    "0000" WHEN "10100",
+    "0011" WHEN "10101",
+    "1101" WHEN "10110",
+    "1011" WHEN "10111",
+    "1100" WHEN "11000",
+    "1010" WHEN "11001",
+    "0001" WHEN "11010",
+    "0000" WHEN "11011",
+    "0000" WHEN "11100",
+    "0000" WHEN "11101",
+    "0000" WHEN "11110",
+    "0000" WHEN "11111",
+    "0000" WHEN OTHERS;
+END ALUControlUnitArch;
