@@ -6,7 +6,7 @@
 - [x] Reg File
 
 2) Arithmetic Functionalities
-- [ ] ALU
+- [x] ALU
 - [ ] PC Adder
 - [x] Sign Extend
 
