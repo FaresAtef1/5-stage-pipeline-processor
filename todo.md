@@ -16,3 +16,11 @@
 - [x] Hazard Detection Unit
 - [x] PC Decoder 
 - [ ] ALU Control
+
+- [ ] Modify Control Unit
+- [ ] Modify Hazard Detection Unit
+- [ ] Fetch Stage
+- [ ] Decode Stage
+- [ ] Execute Stage
+- [ ] Memory Stage
+- [ ] WB Stage
