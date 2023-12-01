@@ -1,7 +1,7 @@
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 
-ENTITY CU IS
+ENTITY ControlUnit IS
     PORT (
         Op_Code : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
         Register_Write : OUT STD_LOGIC;
@@ -22,10 +22,9 @@ ENTITY CU IS
         SWAP : OUT STD_LOGIC;
         RTI : OUT STD_LOGIC
     );
-END ENTITY CU;
+END ENTITY ControlUnit;
 
-ARCHITECTURE ArchCU OF CU IS
-
+ARCHITECTURE ArchControlUnit OF ControlUnit IS
     SIGNAL CU_Signals : STD_LOGIC_VECTOR(16 DOWNTO 0);
 BEGIN
 
@@ -79,5 +78,6 @@ BEGIN
         "00001000000100000" WHEN Op_Code = "00010" ELSE --CALL --NOT FINISHED (2 Cycles to push)
         "10000000000000010" WHEN Op_Code = "00010" ELSE --RET --NOT FINISHED (2 Cycles to pop)
         "10000000000000010" WHEN Op_Code = "00010" ELSE --RTI --NOT FINISHED (2 Cycles to pop)
+        "00000000000000000";
 
-    END ArchCU;
+END ArchControlUnit;
