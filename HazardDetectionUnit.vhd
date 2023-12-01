@@ -5,14 +5,14 @@ use std.textio.all;
 use ieee.std_logic_textio.all;
 use IEEE.std_logic_unsigned.all;
 
-ENTITY HDU IS
-    PORT (MemRead, INRExec, SwapExec, MemToPCExec, MemToPCMem, MemToPCWB: IN STD_LOGIC;
+ENTITY HazardDetctionUnit IS
+    PORT (MemRead, INRExec, SwapExec, MemToPCExec, MemToPCMem, MemToPCWB: IN STD_LOGIC; -- INR--> Input port read
           RSrc1, RSrc2 : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
           ExecRdst : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
           Hazard : OUT STD_LOGIC);
-END HDU;
+END HazardDetctionUnit;
 
-ARCHITECTURE ArchHDU OF HDU IS
+ARCHITECTURE ArchHazardDetctionUnit OF HazardDetctionUnit IS
 BEGIN
     PROCESS (MemRead, INRExec, SwapExec, MemToPCExec, MemToPCMem, MemToPCWB, RSrc1, RSrc2, ExecRdst)
     BEGIN
@@ -24,4 +24,4 @@ BEGIN
             Hazard <= '0';
         END IF;
     END PROCESS; 
-END ArchHDU;
+END ArchHazardDetctionUnit;

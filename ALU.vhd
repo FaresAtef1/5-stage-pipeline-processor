@@ -5,6 +5,7 @@ USE std.textio.ALL;
 USE ieee.std_logic_textio.ALL;
 USE IEEE.math_real.ALL;
 USE IEEE.STD_LOGIC_MISC.ALL;
+
 ENTITY ALU IS
     PORT (
         Cin : IN STD_LOGIC;
@@ -13,8 +14,8 @@ ENTITY ALU IS
         Result : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
         Flags : OUT STD_LOGIC_VECTOR(2 DOWNTO 0)
     );
-
 END ALU;
+
 ARCHITECTURE ALUArch OF ALU IS
     COMPONENT Adder IS
         GENERIC (n : INTEGER := 8);
@@ -34,14 +35,14 @@ ARCHITECTURE ALUArch OF ALU IS
     SIGNAL TempA, TempB, TempOut : STD_LOGIC_VECTOR (31 DOWNTO 0);
     SIGNAL TempCin, TempCout : STD_LOGIC;
     SIGNAL TempResult : STD_LOGIC_VECTOR(31 DOWNTO 0);
-    SIGNAL Temp : STD_LOGIC_VECTOR(32 DOWNTO 0) ;
+    SIGNAL Temp : STD_LOGIC_VECTOR(32 DOWNTO 0);
     SIGNAL RotateDirction : STD_LOGIC;
     SIGNAL RotateOut : STD_LOGIC_VECTOR(32 DOWNTO 0);
 BEGIN
-    Temp <=Cin & Reg1;
+    Temp <= Cin & Reg1;
     u0 : Adder GENERIC MAP(32) PORT MAP(TempA, TempB, TempCin, TempOut, TempCout);
     r0 : Rotate PORT MAP(Temp, Reg2, RotateDirction, RotateOut);
-    PROCESS (Cin, Sel, Reg1, Reg2, TempOut,RotateOut)
+    PROCESS (Cin, Sel, Reg1, Reg2, TempOut, RotateOut)
     BEGIN
         IF Sel = "0000" THEN --passing the first operand
             TempResult <= Reg1;

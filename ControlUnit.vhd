@@ -30,7 +30,6 @@ ENTITY ControlUnit IS
 END ENTITY ControlUnit;
 
 ARCHITECTURE ArchControlUnit OF ControlUnit IS
-
     SIGNAL CU_Signals : STD_LOGIC_VECTOR(16 DOWNTO 0);
 BEGIN
 

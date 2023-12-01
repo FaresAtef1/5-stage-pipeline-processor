@@ -4,18 +4,18 @@ use ieee.numeric_std.all;
 use std.textio.all;
 use ieee.std_logic_textio.all;
 
-ENTITY FU IS
+ENTITY ForwardingUnit IS
     PORT (PrevALURes, PrevMemRes: IN STD_LOGIC_VECTOR (2 DOWNTO 0);
           ExecWB, MemWB: IN STD_LOGIC;
           RSrc1, RSrc2: IN STD_LOGIC_VECTOR (2 DOWNTO 0);
           Forward_Data1, Forward_Data2: OUT STD_LOGIC_VECTOR (1 DOWNTO 0));
-END FU;
+END ForwardingUnit;
 
 -- 00 -> No Forwarding
 -- 10 -> Forward Prev ALU res
 -- 11 -> Forward prev Mem res 
 
-ARCHITECTURE ArchFU OF FU IS
+ARCHITECTURE ArchForwardingUnit OF ForwardingUnit IS
     SIGNAL Sig_Forward_Data1, Sig_Forward_Data2: STD_LOGIC_VECTOR (1 DOWNTO 0);
 BEGIN
     PROCESS (PrevAluRes, PrevMemRes, ExecWB, MemWB, RSrc1, RSrc2)
@@ -41,4 +41,4 @@ BEGIN
     END PROCESS;
     Forward_Data1 <= Sig_Forward_Data1;
     Forward_Data2 <= Sig_Forward_Data2;
-END ArchFU;
+END ArchForwardingUnit;
