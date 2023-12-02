@@ -40,8 +40,14 @@ run 100 ns
 force -freeze MemReadExec 1 0 
 run 100 ns
 force -freeze MemReadExec 0 0 
-force -freeze ExecRsrc1 x"2" 0 
+force -freeze ExecRsrc1 x"1" 0 
 force -freeze ExecRdst x"3" 0 
 run 100 ns
 force -freeze SwapExec 1 0 
+force -freeze Write_Reg x"4" 0 
+force -freeze Write_Data x"e" 0 
+run 100 ns
+force -freeze SwapExec 0 0 
+force -freeze Op_Code 10001 0 
+force -freeze RDst x"4" 0 
 run 100 ns
