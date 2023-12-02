@@ -11,16 +11,16 @@
 - [x] Sign Extend
 
 3) Decoding Functionalities
-- [ ] Control Unit
+- [x] Control Unit
 - [x] Forwarding Unit
 - [x] Hazard Detection Unit
 - [x] PC Decoder 
-- [ ] ALU Control
+- [x] ALU Control
 
 - [ ] Modify Control Unit
 - [ ] Modify Hazard Detection Unit
 - [ ] Fetch Stage
-- [ ] Decode Stage
+- [x] Decode Stage
 - [ ] Execute Stage
 - [ ] Memory Stage
 - [ ] WB Stage
