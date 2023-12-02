@@ -11,35 +11,35 @@ ARCHITECTURE ALUControlUnitArch OF ALUControlUnit IS
 BEGIN
 WITH OpCode SELECT
 ALUOP <=
-    "0000" WHEN "00000",
-    "0000" WHEN "00001",
-    "0000" WHEN "00010",
-    "0010" WHEN "00011",
-    "0010" WHEN "00100",
-    "0011" WHEN "00101",
-    "0100" WHEN "00110",
-    "0101" WHEN "00111",
-    "0110" WHEN "01000",
-    "1001" WHEN "01001",
-    "0001" WHEN "01010",
-    "0001" WHEN "01011",
-    "1001" WHEN "01100",
-    "1001" WHEN "01101",
-    "0111" WHEN "10000",
+    "0000" WHEN "00000", -- NOP
+    "0000" WHEN "00001", -- IN
+    "0000" WHEN "00010", -- SWAP
+    "0010" WHEN "00011", -- ADD
+    "0010" WHEN "00100", -- ADDI
+    "0011" WHEN "00101", -- SUB
+    "0100" WHEN "00110", -- AND
+    "0101" WHEN "00111", -- OR
+    "0110" WHEN "01000", -- XOR
+    "1110" WHEN "01001", -- pop
+    "0001" WHEN "01010", -- LDM
+    "0001" WHEN "01011", -- LDD
+    "1110" WHEN "01100", -- RET
+    "1110" WHEN "01101", -- RTI
+    "0111" WHEN "10000", 
     "1000" WHEN "10001",
     "1001" WHEN "10010",
     "1010" WHEN "10011",
     "0000" WHEN "10100",
-    "0011" WHEN "10101",
-    "1101" WHEN "10110",
-    "1011" WHEN "10111",
-    "1100" WHEN "11000",
-    "1010" WHEN "11001",
-    "0001" WHEN "11010",
-    "0000" WHEN "11011",
-    "0000" WHEN "11100",
-    "0000" WHEN "11101",
-    "0000" WHEN "11110",
-    "0000" WHEN "11111",
+    "0011" WHEN "10101", -- CMP
+    "1101" WHEN "10110", -- BITSET
+    "1011" WHEN "10111", -- RCL
+    "1100" WHEN "11000", -- RCR
+    "1111" WHEN "11001", -- PUSH
+    "0001" WHEN "11010", -- STD
+    "0000" WHEN "11011", -- PROTECT
+    "0000" WHEN "11100", -- FREE
+    "0000" WHEN "11101", -- JZ
+    "0000" WHEN "11110", -- JMP
+    "1111" WHEN "11111", -- CALL
     "0000" WHEN OTHERS;
 END ALUControlUnitArch;
