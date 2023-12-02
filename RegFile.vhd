@@ -24,10 +24,10 @@ BEGIN
             END LOOP;
             REG1_Data <= (OTHERS => '0');
             REG2_Data <= (OTHERS => '0');
-        ELSIF FALLING_EDGE(CLK) AND RegWrite= '1' THEN
+        ELSIF CLK = '0' THEN
             Reg1_Data <= R(to_integer(unsigned(Reg1_Num)));
             Reg2_Data <= R(to_integer(unsigned(Reg2_Num)));
-        ELSE
+        ELSIF CLK = '1' AND RegWrite = '1' THEN
             R(to_integer(unsigned(Write_Reg))) <=write_data;
         END IF; 
     END PROCESS; 
