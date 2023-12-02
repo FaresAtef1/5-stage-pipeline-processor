@@ -39,11 +39,11 @@ ARCHITECTURE ALUArch OF ALU IS
     SIGNAL RotateDirction : STD_LOGIC;
     SIGNAL RotateOut : STD_LOGIC_VECTOR(32 DOWNTO 0);
 BEGIN
-    Temp <= Cin & Reg1;
     u0 : Adder GENERIC MAP(32) PORT MAP(TempA, TempB, TempCin, TempOut, TempCout);
     r0 : Rotate PORT MAP(Temp, Reg2, RotateDirction, RotateOut);
-    PROCESS (Cin, Sel, Reg1, Reg2, TempOut, RotateOut)
+    PROCESS (Sel, Reg1, Reg2, TempOut, RotateOut)
     BEGIN
+        Temp <= Cin & Reg1;
         IF Sel = "0000" THEN --passing the first operand
             TempResult <= Reg1;
             Flags(2) <= Cin;
