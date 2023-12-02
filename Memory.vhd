@@ -24,10 +24,10 @@ ARCHITECTURE MemoryArch OF Memory IS
     TYPE MEM_ARRAY IS ARRAY(2 ** address_width - 1 DOWNTO 0) OF STD_LOGIC_VECTOR(slot_width - 1 DOWNTO 0);
     SIGNAL MemoryArray : MEM_ARRAY;
 BEGIN
-    PROCESS (WR_EN, RD_EN,Address,Write_Data,RST)
+    PROCESS (WR_EN, RD_EN, Address, Write_Data, RST)
     BEGIN
         IF RST = '1' THEN
-            MemoryArray <= (OTHERS => (OTHERS => 'U'));
+            MemoryArray <= (OTHERS => (OTHERS => '0'));
         END IF;
         IF RD_EN = '1' THEN
             rddata : FOR i IN 0 TO (bus_width/slot_width - 1) LOOP
