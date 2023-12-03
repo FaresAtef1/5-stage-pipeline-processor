@@ -21,7 +21,7 @@ END PCDecoder;
 
 ARCHITECTURE PCDecoderArch OF PCDecoder IS
 BEGIN
-    PROCESS (Rds, PC_inc_mem, memory, PC_inc, call, mem_to_PC, branch, prev_branch)
+    PROCESS (Rds, PC_inc_mem, memory, PC_inc, call, mem_to_PC, branch, prev_branch, Zero_Flag)
     BEGIN
         IF (call = '1') OR (branch = '1') THEN
             PC_out <= Rds;
