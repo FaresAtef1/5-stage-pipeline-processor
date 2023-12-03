@@ -24,3 +24,4 @@
 - [ ] Execute Stage
 - [ ] Memory Stage
 - [ ] WB Stage
+- [ ] Change the decode stage after the added Push_INT_PC signal in the control unit
