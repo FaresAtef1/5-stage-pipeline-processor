@@ -64,7 +64,8 @@ ARCHITECTURE ArchDecodeStage OF DecodeStage IS
             Call : OUT STD_LOGIC;
             Mem_2PC : OUT STD_LOGIC;
             Swap : OUT STD_LOGIC;
-            RTI : OUT STD_LOGIC
+            RTI : OUT STD_LOGIC;
+            Push_INT_PC : OUT STD_LOGIC
         );
     END COMPONENT ControlUnit;
     COMPONENT RegFile IS
