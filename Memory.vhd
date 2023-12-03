@@ -27,7 +27,7 @@ BEGIN
     PROCESS (WR_EN, RD_EN, Address, Write_Data, RST)
     BEGIN
         IF RST = '1' THEN
-            MemoryArray <= (OTHERS => (OTHERS => '0'));
+            MemoryArray <= (OTHERS => (OTHERS => '0')); ----------- Zero not U
         END IF;
         IF RD_EN = '1' THEN
             rddata : FOR i IN 0 TO (bus_width/slot_width - 1) LOOP

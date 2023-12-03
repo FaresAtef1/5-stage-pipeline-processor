@@ -28,6 +28,7 @@ ARCHITECTURE ALUArch OF ALU IS
     COMPONENT Rotate IS PORT (
         Data : IN STD_LOGIC_VECTOR(32 DOWNTO 0);
         Amount : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+        Enable : IN STD_LOGIC;
         Direction : IN STD_LOGIC;
         RData : OUT STD_LOGIC_VECTOR(32 DOWNTO 0));
     END COMPONENT Rotate;
@@ -38,12 +39,18 @@ ARCHITECTURE ALUArch OF ALU IS
     SIGNAL Temp : STD_LOGIC_VECTOR(32 DOWNTO 0);
     SIGNAL RotateDirction : STD_LOGIC;
     SIGNAL RotateOut : STD_LOGIC_VECTOR(32 DOWNTO 0);
+    SIGNAL RotateEnable : STD_LOGIC;
 BEGIN
-    Temp <= Cin & Reg1;
     u0 : Adder GENERIC MAP(32) PORT MAP(TempA, TempB, TempCin, TempOut, TempCout);
-    r0 : Rotate PORT MAP(Temp, Reg2, RotateDirction, RotateOut);
-    PROCESS (Cin, Sel, Reg1, Reg2, TempOut, RotateOut)
+    r0 : Rotate PORT MAP(Temp, Reg2,RotateEnable ,RotateDirction, RotateOut);
+
+    RotateEnable <=
+        '1' WHEN Sel = "1011" OR Sel = "1100" ELSE
+        '0';
+
+    PROCESS (Sel, Reg1, Reg2, TempOut, RotateOut,TempCout)
     BEGIN
+        Temp <= Cin & Reg1;
         IF Sel = "0000" THEN --passing the first operand
             TempResult <= Reg1;
             Flags(2) <= Cin;
@@ -105,9 +112,18 @@ BEGIN
             Flags(2) <= Reg1(to_integer(unsigned(Reg2)));
             TempResult <= Reg1;
             TempResult(to_integer(unsigned(Reg2))) <= '1';
-        ELSE
-            TempResult <= (OTHERS => '0');
-            Flags(2) <= Cin;
+        ELSIF Sel = "1110" THEN
+            TempA <= Reg1;
+            TempB <= x"00000002";
+            TempCin <= '0';
+            TempResult <= TempOut;
+            Flags(2) <= TempCout;
+        ELSIF Sel = "1111" THEN
+            TempA <= Reg1;
+            TempB <= x"FFFFFFFE";
+            TempCin <= '0';
+            TempResult <= TempOut;
+            Flags(2) <= TempCout;
         END IF;
     END PROCESS;
     Result <= TempResult;
