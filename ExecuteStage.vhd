@@ -92,11 +92,12 @@ ARCHITECTURE ArchExecuteStage OF ExecuteStage IS
     SIGNAL Flag_Data : STD_LOGIC_VECTOR(2 DOWNTO 0);
     SIGNAL ALU_SP : STD_LOGIC_VECTOR(31 DOWNTO 0);
     SIGNAL FR_Out : STD_LOGIC_VECTOR(2 DOWNTO 0);
+    SIGNAL Read_Enable : STD_LOGIC;
 BEGIN
     AC1 : ALUControlUnit PORT MAP(Op_Code, ALU_Sel);
     A1 : ALU PORT MAP(FR_Out(2), ALU_Sel, ALU_Op1, ALU_Op2, ALU_Result, ALU_Flags);
     F1 : ForwardingUnit PORT MAP(Rdst_Mem, Rdst_WB, Register_Write_Mem, Register_Write_WB, Rsrc1, Rsrc2, Forward_Data1, Forward_Data2);
-    PM1 : Memory GENERIC MAP(1, 12, 1) PORT MAP(Reset, Protect_Write, '1', Protect_Address(11 DOWNTO 0), Protect_Val, Protect_Out); --- protect memory
+    PM1 : Memory GENERIC MAP(1, 12, 1) PORT MAP(Reset, Protect_Write, Read_Enable, Protect_Address(11 DOWNTO 0), Protect_Val, Protect_Out); --- protect memory
     FR1 : GenericRegister GENERIC MAP(3) PORT MAP(FR_EN, Reset, Flag_Data, "000",FR_Out);-- Flags Register
     SP1 : GenericRegister PORT MAP(Stack_Mem, Reset, Prev_ALU_Res, x"FFFFFFFF",ALU_SP);-- stack pointer Register
 
@@ -130,5 +131,7 @@ BEGIN
     FR_EN <= Write_Flag OR RTI_WB;
     --
     Flags <= FR_Out;
+
+    Read_Enable <= NOT Protect_Write;
 
 END ARCHITECTURE ArchExecuteStage;

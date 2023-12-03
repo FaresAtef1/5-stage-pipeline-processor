@@ -85,3 +85,80 @@ force -freeze sim:/executestage/Stack_Mem 1 0
 force -freeze sim:/executestage/Prev_ALU_Res 11111111111111111111111111111101 0
 force -freeze sim:/executestage/Op_Code 00000 0
 run
+force -freeze sim:/executestage/Op_Code 11011 0
+force -freeze sim:/executestage/Stack_Mem 0 0
+force -freeze sim:/executestage/Read_Data1 10#1 0
+force -freeze sim:/executestage/Protect_Write 1 0
+force -freeze sim:/executestage/Protect_Val 1 0
+run
+force -freeze sim:/executestage/Protect_Write 0 0
+force -freeze sim:/executestage/Protect_Val 0 0
+run
+force -freeze sim:/executestage/Protect_Write 1 0
+force -freeze sim:/executestage/Protect_Val 1 0
+force -freeze sim:/executestage/Immediate_Val 10#1 0
+run
+force -freeze sim:/executestage/Protect_Write 0 0
+force -freeze sim:/executestage/Protect_Val 0 0
+run
+force -freeze sim:/executestage/Op_Code 11100 0
+force -freeze sim:/executestage/Protect_Write 1 0
+run
+force -freeze sim:/executestage/Protect_Write 0 0
+run
+force -freeze sim:/executestage/Op_Code 10111 0
+force -freeze sim:/executestage/Read_Data1 10#250 0
+force -freeze sim:/executestage/Write_Flag 1 0
+force -freeze sim:/executestage/Immediate 1 0
+force -freeze sim:/executestage/Immediate_Val 10#2 0
+run
+force -freeze sim:/executestage/Op_Code 11000 0
+force -freeze sim:/executestage/Read_Data1 10#1002 0
+run
+force -freeze sim:/executestage/Immediate_Val 10#50 0
+run
+force -freeze sim:/executestage/Op_Code 10000 0
+force -freeze sim:/executestage/Immediate 0 0
+force -freeze sim:/executestage/Read_Data1 10#1 0
+force -freeze sim:/executestage/Read_Data1 10#0 0
+run
+force -freeze sim:/executestage/Read_Data1 10#1 0
+run
+force -freeze sim:/executestage/Op_Code 10001 0
+run
+noforce sim:/executestage/Op_Code
+force -freeze sim:/executestage/Op_Code 10010 0
+run
+force -freeze sim:/executestage/Op_Code 10111 0
+force -freeze sim:/executestage/Immediate_Val 10#65 0
+run
+force -freeze sim:/executestage/Immediate 1 0
+run
+force -freeze sim:/executestage/Op_Code 11000 0
+force -freeze sim:/executestage/Immediate_Val 10#257 0
+force -freeze sim:/executestage/Read_Data1 10#2 0
+run
+force -freeze sim:/executestage/Op_Code 10011 0
+force -freeze sim:/executestage/Immediate 0 0
+run
+force -freeze sim:/executestage/Op_Code 00110 0
+force -freeze sim:/executestage/Read_Data1 10#3 0
+force -freeze sim:/executestage/Read_Data2 10#2 0
+run
+force -freeze sim:/executestage/Op_Code 00111 0
+run
+force -freeze sim:/executestage/Op_Code 01000 0
+run
+force -freeze sim:/executestage/Op_Code 10101 0
+run
+force -freeze sim:/executestage/Read_Data1 10#2 0
+run
+force -freeze sim:/executestage/Read_Data2 10#3 0
+run
+force -freeze sim:/executestage/Op_Code 10110 0
+force -freeze sim:/executestage/Immediate 1 0
+force -freeze sim:/executestage/Immediate_Val 10#1 0
+force -freeze sim:/executestage/Immediate_Val 10#0 0
+run
+force -freeze sim:/executestage/Immediate_Val 10#7 0
+run
