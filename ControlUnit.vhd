@@ -90,5 +90,5 @@ BEGIN
         "000010000001000000" WHEN Op_Code = "11111" ELSE --CALL --NOT FINISHED (2 Cycles to push)
         "100000000000000100" WHEN Op_Code = "01100" ELSE --RET --NOT FINISHED (2 Cycles to pop)
         "100000000000000100" WHEN Op_Code = "01101"; --RTI --NOT FINISHED (2 Cycles to pop)
-
+     
 END ArchControlUnit;

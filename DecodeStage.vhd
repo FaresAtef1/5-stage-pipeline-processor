@@ -28,6 +28,7 @@ ENTITY DecodeStage IS
         Mem_2PC : OUT STD_LOGIC;
         SWAP : OUT STD_LOGIC;
         RTI : OUT STD_LOGIC;
+        Push_INT_PC : OUT STD_LOGIC;
         InstRdst : OUT STD_LOGIC_VECTOR (2 DOWNTO 0);
         Read_Data1, Read_Data2 : OUT STD_LOGIC_VECTOR (31 DOWNTO 0));
 END DecodeStage;
@@ -84,16 +85,16 @@ ARCHITECTURE ArchDecodeStage OF DecodeStage IS
     END COMPONENT RegFileDecoder;
     SIGNAL Hazard : STD_LOGIC;
     SIGNAL Read_Data1_SIG, Read_Data2_SIG : STD_LOGIC_VECTOR (31 DOWNTO 0);
-    SIGNAL CU_Signals : STD_LOGIC_VECTOR(16 DOWNTO 0);
+    SIGNAL CU_Signals : STD_LOGIC_VECTOR(17 DOWNTO 0);
     SIGNAL ReadReg1, ReadReg2 : STD_LOGIC_VECTOR(2 DOWNTO 0); -- ReadReg1 is the register number of the first register to be read, ReadReg2 is the register number of the second register to be read
 BEGIN
     D1 : RegFileDecoder PORT MAP(RDst, RSrc1, ExecRdst, Op_Code(4), SwapExec, ReadReg1); -- Op_Code(4) is the SingleOp signal
     ReadReg2 <= RSrc2 WHEN Op_Code(4) = '0' ELSE
         RSRC1; -- For instruction cmp
     H1 : HazardDetctionUnit PORT MAP(MemReadExec, INRExec, SwapExec, MemToPCExec, MemToPCMem, MemToPCWB, RSrc1, RSrc2, ExecRdst, Hazard);
-    C1 : ControlUnit PORT MAP(Op_Code, SwapExec, ResetExec, INTExec, INTMem, INTWB, CU_Signals(16), CU_Signals(15), CU_Signals(14), CU_Signals(13), CU_Signals(12), CU_Signals(11), CU_Signals(10), CU_Signals(9), CU_Signals(8), CU_Signals(7), CU_Signals(6), CU_Signals(5), CU_Signals(4), CU_Signals(3), CU_Signals(2), CU_Signals(1), CU_Signals(0));
+    C1 : ControlUnit PORT MAP(Op_Code, SwapExec, ResetExec, INTExec, INTMem, INTWB, CU_Signals(17), CU_Signals(16), CU_Signals(15), CU_Signals(14), CU_Signals(13), CU_Signals(12), CU_Signals(11), CU_Signals(10), CU_Signals(9), CU_Signals(8), CU_Signals(7), CU_Signals(6), CU_Signals(5), CU_Signals(4), CU_Signals(3), CU_Signals(2), CU_Signals(1), CU_Signals(0));
     R1 : RegFile PORT MAP(CLK, Reset, RegWriteWB, ReadReg1, ReadReg2, Write_Reg, Write_Data, Read_Data1_SIG, Read_Data2_SIG);
-    PROCESS (Read_Data1_SIG, Read_Data2_SIG, Hazard)
+    PROCESS (Read_Data1_SIG, Read_Data2_SIG, Hazard, CU_Signals)
     BEGIN
         IF Hazard = '1' AND (INT = '0' AND INTExec = '0' AND INTMem = '0' AND INTWB = '0') THEN
             Register_Write <= '0';
@@ -113,24 +114,26 @@ BEGIN
             Mem_2PC <= '0';
             SWAP <= '0';
             RTI <= '0';
+            Push_INT_PC <= '0';
         ELSE
-            Register_Write <= CU_Signals(16);
-            Branch <= CU_Signals(15);
-            Immediate <= CU_Signals(14);
-            Mem_Read <= CU_Signals(13);
-            Mem_Write <= CU_Signals(12);
-            Mem_2Reg <= CU_Signals(11);
-            Port_Write <= CU_Signals(10);
-            Port_Read <= CU_Signals(9);
-            Protect_Write <= CU_Signals(8);
-            Protect_Val <= CU_Signals(7);
-            Write_Flag <= CU_Signals(6);
-            Stack <= CU_Signals(5);
-            Push <= CU_Signals(4);
-            Call <= CU_Signals(3);
-            Mem_2PC <= CU_Signals(2);
-            SWAP <= CU_Signals(1);
-            RTI <= CU_Signals(0);
+            Register_Write <= CU_Signals(17);
+            Branch <= CU_Signals(16);
+            Immediate <= CU_Signals(15);
+            Mem_Read <= CU_Signals(14);
+            Mem_Write <= CU_Signals(13);
+            Mem_2Reg <= CU_Signals(12);
+            Port_Write <= CU_Signals(11);
+            Port_Read <= CU_Signals(10);
+            Protect_Write <= CU_Signals(9);
+            Protect_Val <= CU_Signals(8);
+            Write_Flag <= CU_Signals(7);
+            Stack <= CU_Signals(6);
+            Push <= CU_Signals(5);
+            Call <= CU_Signals(4);
+            Mem_2PC <= CU_Signals(3);
+            SWAP <= CU_Signals(2);
+            RTI <= CU_Signals(1);
+            Push_INT_PC <= CU_Signals(0);
         END IF;
         IF SwapExec = '1' THEN
             InstRdst <= ExecRsrc1;
