@@ -19,14 +19,16 @@ ENTITY MemoryStage IS
         Protected_Mem : IN STD_LOGIC;
         IOW : IN STD_LOGIC;
         IOR : IN STD_LOGIC;
+        Mem_Init : IN STD_LOGIC;
         ALU_Res : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
         R1 : IN STD_LOGIC_VECTOR (31 DOWNTO 0);
         Prev_SP : IN STD_LOGIC_VECTOR (31 DOWNTO 0);
         PC_inc : IN STD_LOGIC_VECTOR (31 DOWNTO 0);
         IN_Port_Data : IN STD_LOGIC_VECTOR (31 DOWNTO 0);
-        Flags : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
+        Flags : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
         Port_Read_Data : OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
-        Mem_Read_Data : OUT STD_LOGIC_VECTOR (31 DOWNTO 0)
+        Mem_Read_Data : OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
+        Output_Port_Data : OUT STD_LOGIC_VECTOR (31 DOWNTO 0)
     );
 END MemoryStage;
 
@@ -44,7 +46,7 @@ ARCHITECTURE MemoryStageArch OF MemoryStage IS
         PORT (
             R1 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
             PC_inc : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-            Flags : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+            Flags : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
             Push_INT_PC : IN STD_LOGIC;
             Push_INT_PC_WB : IN STD_LOGIC;
             Call : IN STD_LOGIC;
@@ -69,7 +71,8 @@ ARCHITECTURE MemoryStageArch OF MemoryStage IS
             RESET, OutW, InR : IN STD_LOGIC;
             Write_Data : IN STD_LOGIC_VECTOR (31 DOWNTO 0); -- Data to be written to the output port
             InData : IN STD_LOGIC_VECTOR (31 DOWNTO 0); -- Data from the input port
-            Read_Data : OUT STD_LOGIC_VECTOR (31 DOWNTO 0)); -- Data read from the input port
+            Read_Data : OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
+            Output_Port : OUT STD_LOGIC_VECTOR (31 DOWNTO 0)); -- Data read from the input port
     END COMPONENT IOPort;
     SIGNAL write_data_out : STD_LOGIC_VECTOR(31 DOWNTO 0);
     SIGNAL Address_out : STD_LOGIC_VECTOR(11 DOWNTO 0);
@@ -98,7 +101,7 @@ BEGIN
         slot_width => 16
     )
     PORT MAP(
-        RST => RST,
+        RST => Mem_Init,
         WR_EN => WR_EN,
         RD_EN => MemRead,
         Address => Address_out,
@@ -110,6 +113,7 @@ BEGIN
         InR => IOR,
         Write_Data => ALU_Res,
         InData => IN_Port_Data,
-        Read_Data => Port_Read_Data);
+        Read_Data => Port_Read_Data,
+        Output_Port => Output_Port_Data);
 
 END MemoryStageArch;

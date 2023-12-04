@@ -20,7 +20,8 @@ ENTITY ExecuteStage IS
         Read_Data2 : IN STD_LOGIC_VECTOR (31 DOWNTO 0);
         Immediate_Val : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
         Effective_Address : IN STD_LOGIC_VECTOR(19 DOWNTO 0);
-        Reset : IN STD_LOGIC;
+        Reset : IN STD_LOGIC; -- Not Reset_Exec, It is Reset_Init (in the processor module)
+        Reset_Mem : IN STD_LOGIC;
         ALU_Result : OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
         Protect_Out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);-- to match generic map
         Flags : OUT STD_LOGIC_VECTOR (2 DOWNTO 0);
@@ -93,14 +94,15 @@ ARCHITECTURE ArchExecuteStage OF ExecuteStage IS
     SIGNAL ALU_SP : STD_LOGIC_VECTOR(31 DOWNTO 0);
     SIGNAL FR_Out : STD_LOGIC_VECTOR(2 DOWNTO 0);
     SIGNAL Read_Enable : STD_LOGIC;
+    SIGNAL Reset_Regs : STD_LOGIC;
 BEGIN
     AC1 : ALUControlUnit PORT MAP(Op_Code, ALU_Sel);
     A1 : ALU PORT MAP(FR_Out(2), ALU_Sel, ALU_Op1, ALU_Op2, ALU_Result, ALU_Flags);
     F1 : ForwardingUnit PORT MAP(Rdst_Mem, Rdst_WB, Register_Write_Mem, Register_Write_WB, Rsrc1, Rsrc2, Forward_Data1, Forward_Data2);
-    PM1 : Memory GENERIC MAP(1, 12, 1) PORT MAP(Reset, Protect_Write, Read_Enable, Protect_Address(11 DOWNTO 0), Protect_Val, Protect_Out); --- protect memory
-    FR1 : GenericRegister GENERIC MAP(3) PORT MAP(FR_EN, Reset, Flag_Data, "000",FR_Out);-- Flags Register
-    SP1 : GenericRegister PORT MAP(Stack_Mem, Reset, Prev_ALU_Res, x"FFFFFFFF",ALU_SP);-- stack pointer Register
-
+    PM1 : Memory GENERIC MAP(1, 12, 1) PORT MAP(Reset_Regs, Protect_Write, Read_Enable, Protect_Address(11 DOWNTO 0), Protect_Val, Protect_Out); --- protect memory
+    FR1 : GenericRegister GENERIC MAP(3) PORT MAP(FR_EN, Reset_Regs, Flag_Data, "000", FR_Out);-- Flags Register
+    SP1 : GenericRegister PORT MAP(Stack_Mem, Reset_Regs, Prev_ALU_Res, x"FFFFFFFF", ALU_SP);-- stack pointer Register
+    Reset_Regs <= Reset OR Reset_Mem;
     Stack_Pointer <= ALU_SP;
     -- operand 1 mux
     ALU_Op1 <=

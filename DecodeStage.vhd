@@ -8,7 +8,7 @@ ENTITY DecodeStage IS
     PORT (
         CLK : IN STD_LOGIC;
         Op_Code : IN STD_LOGIC_VECTOR (4 DOWNTO 0);
-        Reset, ResetExec, ResetMem, ResetWB, INT, INTExec, INTMem, INTWB, MemReadExec, SwapExec, INRExec, MemToPCExec, MemToPCMem, MemToPCWB, RegWriteWB : IN STD_LOGIC;
+        Reset, ResetExec, ResetMem, ResetWB, INT, INTExec, INTMem, INTWB, MemReadExec, SwapExec, INRExec, MemToPCExec, ImmediateExec, MemToPCMem, MemToPCWB, RegWriteWB : IN STD_LOGIC;
         RDst, RSrc1, RSrc2, Write_Reg, ExecRdst, ExecRsrc1 : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
         Write_Data : IN STD_LOGIC_VECTOR (31 DOWNTO 0);
         Register_Write : OUT STD_LOGIC;
@@ -29,14 +29,14 @@ ENTITY DecodeStage IS
         SWAP : OUT STD_LOGIC;
         RTI : OUT STD_LOGIC;
         Push_INT_PC : OUT STD_LOGIC;
-        InstRdst : OUT STD_LOGIC_VECTOR (2 DOWNTO 0);
+        InstRdst, InstRsrc1, InstRscr2 : OUT STD_LOGIC_VECTOR (2 DOWNTO 0);
         Read_Data1, Read_Data2 : OUT STD_LOGIC_VECTOR (31 DOWNTO 0));
 END DecodeStage;
 
 ARCHITECTURE ArchDecodeStage OF DecodeStage IS
     COMPONENT HazardDetctionUnit IS
         PORT (
-            MemRead, INRExec, SwapExec, MemToPCExec, MemToPCMem, MemToPCWB : IN STD_LOGIC;
+            MemRead, INRExec, SwapExec, MemToPCExec, MemToPCMem, MemToPCWB, Immediate : IN STD_LOGIC;
             RSrc1, RSrc2 : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
             ExecRdst : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
             Hazard : OUT STD_LOGIC);
@@ -91,10 +91,10 @@ BEGIN
     D1 : RegFileDecoder PORT MAP(RDst, RSrc1, ExecRdst, Op_Code(4), SwapExec, ReadReg1); -- Op_Code(4) is the SingleOp signal
     ReadReg2 <= RSrc2 WHEN Op_Code(4) = '0' ELSE
         RSRC1; -- For instruction cmp
-    H1 : HazardDetctionUnit PORT MAP(MemReadExec, INRExec, SwapExec, MemToPCExec, MemToPCMem, MemToPCWB, RSrc1, RSrc2, ExecRdst, Hazard);
+    H1 : HazardDetctionUnit PORT MAP(MemReadExec, INRExec, SwapExec, MemToPCExec, MemToPCMem, MemToPCWB, ImmediateExec, RSrc1, RSrc2, ExecRdst, Hazard);
     C1 : ControlUnit PORT MAP(Op_Code, SwapExec, ResetExec, INTExec, INTMem, INTWB, CU_Signals(17), CU_Signals(16), CU_Signals(15), CU_Signals(14), CU_Signals(13), CU_Signals(12), CU_Signals(11), CU_Signals(10), CU_Signals(9), CU_Signals(8), CU_Signals(7), CU_Signals(6), CU_Signals(5), CU_Signals(4), CU_Signals(3), CU_Signals(2), CU_Signals(1), CU_Signals(0));
     R1 : RegFile PORT MAP(CLK, Reset, RegWriteWB, ReadReg1, ReadReg2, Write_Reg, Write_Data, Read_Data1_SIG, Read_Data2_SIG);
-    PROCESS (Read_Data1_SIG, Read_Data2_SIG, Hazard, CU_Signals)
+    PROCESS (CLK, Read_Data1_SIG, Read_Data2_SIG, Hazard, CU_Signals, Reset, ResetExec, ResetMem, ResetWB, INT, INTExec, INTMem, INTWB, MemReadExec, SwapExec, INRExec, MemToPCExec, ImmediateExec, MemToPCMem, MemToPCWB, RegWriteWB, RDst, RSrc1, RSrc2, Write_Reg, ExecRdst, ExecRsrc1, Op_Code, Write_Data)
     BEGIN
         IF Hazard = '1' AND (INT = '0' AND INTExec = '0' AND INTMem = '0' AND INTWB = '0') THEN
             Register_Write <= '0';
@@ -142,5 +142,7 @@ BEGIN
         END IF;
         Read_Data1 <= Read_Data1_SIG;
         Read_Data2 <= Read_Data2_SIG;
+        InstRsrc1 <= ReadReg1;
+        InstRscr2 <= ReadReg2;
     END PROCESS;
 END ArchDecodeStage;
