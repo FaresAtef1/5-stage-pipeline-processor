@@ -29,6 +29,7 @@ ENTITY IDEXRegister IS
         Op_Code : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
         Rdst, Rsrc1, Rsrc2 : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
         INC_PC: IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+        Push_INT_PC : IN STD_LOGIC;
         --output ports
         Register_Write_Out : OUT STD_LOGIC;
         Branch_Out : OUT STD_LOGIC;
@@ -39,7 +40,7 @@ ENTITY IDEXRegister IS
         Port_Write_Out : OUT STD_LOGIC;
         Port_Read_Out : OUT STD_LOGIC;
         Protect_Write_Out : OUT STD_LOGIC;
-        Protect_Val_Out : OUT STD_LOGIC;
+        Protect_Val_Out : OUT STD_LOGIC_VECTOR (0 DOWNTO 0);
         Write_Flag_Out : OUT STD_LOGIC;
         Stack_Out : OUT STD_LOGIC;
         Push_Out : OUT STD_LOGIC;
@@ -53,7 +54,8 @@ ENTITY IDEXRegister IS
         Read_Data2_Out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
         Op_Code_Out : OUT STD_LOGIC_VECTOR(4 DOWNTO 0);
         Rdst_Out, Rsrc1_Out, Rsrc2_Out : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-        INC_PC_Out: OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+        INC_PC_Out: OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+        Push_INT_PC_Out : OUT STD_LOGIC
 
     );
 
@@ -74,7 +76,7 @@ BEGIN
             Port_Write_Out <= '0';
             Port_Read_Out <= '0';
             Protect_Write_Out <= '0';
-            Protect_Val_Out <= '0';
+            Protect_Val_Out <= (OTHERS=>'0');
             Write_Flag_Out <= '0';
             Stack_Out <= '0';
             Push_Out <= '0';
@@ -86,6 +88,7 @@ BEGIN
             Read_Data2_Out <= (OTHERS => '0');
             RST_Out <= '0';
             INT_Out <= '0';
+            Push_INT_PC_Out <= '0';
             INC_PC_Out <= (OTHERS => '0');
             Op_Code_out <= (OTHERS => '0');
             Rdst_Out <= (OTHERS => '0');
@@ -101,7 +104,7 @@ BEGIN
             Port_Write_Out <= Port_Write;
             Port_Read_Out <= Port_Read;
             Protect_Write_Out <= Protect_Write;
-            Protect_Val_Out <= Protect_Val;
+            Protect_Val_Out(0) <= Protect_Val;
             Write_Flag_Out <= Write_Flag;
             Stack_Out <= Stack;
             Push_Out <= Push;
@@ -118,6 +121,7 @@ BEGIN
             Rdst_Out <= Rdst;
             Rsrc1_Out <= Rsrc1;
             Rsrc2_Out <= Rsrc2;
+            Push_INT_PC_Out <= Push_INT_PC;
         END IF;
     END PROCESS;
 END ArchIDEXRegister;

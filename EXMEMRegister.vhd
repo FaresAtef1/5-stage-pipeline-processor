@@ -24,8 +24,8 @@ ENTITY EXMEMRegister IS
         ALU_Result : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
         Memory_Data : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
         Flags : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
-        Rdst, Rsrc1, Rsrc2 : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
-        Protect_State : IN STD_LOGIC;
+        Rdst : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+        Protect_State : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
         -- output ports
         RTI_Out : OUT STD_LOGIC;
         Register_Write_Out : OUT STD_LOGIC;
@@ -47,7 +47,7 @@ ENTITY EXMEMRegister IS
         ALU_Result_Out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
         Memory_Data_Out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
         Flags_Out : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-        Rdst_Out, Rsrc1_Out, Rsrc2_Out : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+        Rdst_Out: OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
         Protect_State_Out : OUT STD_LOGIC
     );
 END ENTITY EXMEMRegister;
@@ -79,8 +79,6 @@ BEGIN
             Memory_Data_Out <= (OTHERS=>'0');
             Flags_Out <= (OTHERS=>'0');
             Rdst_Out <= (OTHERS => '0');
-            Rsrc1_Out <= (OTHERS => '0');
-            Rsrc2_Out <= (OTHERS => '0');
             Protect_State_Out<='0';
         ELSIF RISING_EDGE(Clk) THEN
         RTI_Out <= RTI;
@@ -104,9 +102,7 @@ BEGIN
         Memory_Data_Out <= Memory_Data;
         Flags_Out <= Flags;
         Rdst_Out <= Rdst;
-        Rsrc1_Out <= Rsrc1;
-        Rsrc2_Out <= Rsrc2;
-        Protect_State_Out<=Protect_State;
+        Protect_State_Out<=Protect_State(0);
         END IF;
     END PROCESS;
 

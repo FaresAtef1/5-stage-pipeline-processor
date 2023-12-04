@@ -126,7 +126,7 @@ BEGIN
     -- flag register mux
     Flag_Data <=
         ALU_Flags WHEN RTI_WB = '0' ELSE
-        RTI_Flags;
+        RTI_Flags WHEN RTI_WB = '1';
     -- flag register write enable
     FR_EN <= Write_Flag OR RTI_WB;
     --
