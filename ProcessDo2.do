@@ -173,7 +173,7 @@ run 100 ns
 force -freeze IN_Inst "1101001000000000" 0 
 run 100 ns
 
-force -freeze IN_Inst "0000000000000010" 0 
+force -freeze IN_Inst "0000000000000000" 0 
 run 100 ns
 
 force -freeze IN_Inst "1101101100000000" 0 
