@@ -7,7 +7,7 @@
 
 2) Arithmetic Functionalities
 - [x] ALU
-- [ ] PC Adder
+- [x] PC Adder
 - [x] Sign Extend
 
 3) Decoding Functionalities
@@ -17,13 +17,13 @@
 - [x] PC Decoder 
 - [x] ALU Control
 
-- [ ] Modify Control Unit
+- [x] Modify Control Unit
 - [ ] Modify Hazard Detection Unit
-- [ ] Fetch Stage
+- [x] Fetch Stage
 - [x] Decode Stage
-- [ ] Execute Stage
-- [ ] Memory Stage
-- [ ] WB Stage
+- [x] Execute Stage
+- [x] Memory Stage
+- [x] WB Stage
 - [x] Change the decode stage after the added Push_INT_PC signal in the control unit
-- [ ] Change Reset of the Reg file
+- [x] Change Reset of the Reg file
 - [ ] Add port forwarding to the forwarding unit
