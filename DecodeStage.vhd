@@ -30,7 +30,8 @@ ENTITY DecodeStage IS
         RTI : OUT STD_LOGIC;
         Push_INT_PC : OUT STD_LOGIC;
         InstRdst, InstRsrc1, InstRscr2 : OUT STD_LOGIC_VECTOR (2 DOWNTO 0);
-        Read_Data1, Read_Data2 : OUT STD_LOGIC_VECTOR (31 DOWNTO 0));
+        Read_Data1, Read_Data2 : OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
+        Reg0, Reg1, Reg2, Reg3, Reg4, Reg5, Reg6, Reg7: OUT STD_LOGIC_VECTOR (31 DOWNTO 0));
 END DecodeStage;
 
 ARCHITECTURE ArchDecodeStage OF DecodeStage IS
@@ -75,7 +76,8 @@ ARCHITECTURE ArchDecodeStage OF DecodeStage IS
             RESET, RegWrite : IN STD_LOGIC;
             Reg1_Num, Reg2_Num, Write_Reg : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
             Write_Data : IN STD_LOGIC_VECTOR (31 DOWNTO 0);
-            Reg1_Data, Reg2_Data : OUT STD_LOGIC_VECTOR (31 DOWNTO 0));
+            Reg1_Data, Reg2_Data : OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
+            Reg0, Reg1, Reg2, Reg3, Reg4, Reg5, Reg6, Reg7: OUT STD_LOGIC_VECTOR (31 DOWNTO 0));
     END COMPONENT RegFile;
     COMPONENT RegFileDecoder IS
         PORT (
@@ -87,14 +89,16 @@ ARCHITECTURE ArchDecodeStage OF DecodeStage IS
     SIGNAL Read_Data1_SIG, Read_Data2_SIG : STD_LOGIC_VECTOR (31 DOWNTO 0);
     SIGNAL CU_Signals : STD_LOGIC_VECTOR(17 DOWNTO 0);
     SIGNAL ReadReg1, ReadReg2 : STD_LOGIC_VECTOR(2 DOWNTO 0); -- ReadReg1 is the register number of the first register to be read, ReadReg2 is the register number of the second register to be read
-BEGIN
+    SIGNAL Reg0_Sig, Reg1_Sig, Reg2_Sig, Reg3_Sig, Reg4_Sig, Reg5_Sig, Reg6_Sig, Reg7_Sig : STD_LOGIC_VECTOR(31 DOWNTO 0);
+
+    BEGIN
     D1 : RegFileDecoder PORT MAP(RDst, RSrc1, ExecRdst, Op_Code(4), SwapExec, ReadReg1); -- Op_Code(4) is the SingleOp signal
     ReadReg2 <= RSrc2 WHEN Op_Code(4) = '0' ELSE
         RSRC1; -- For instruction cmp
     H1 : HazardDetctionUnit PORT MAP(MemReadExec, INRExec, SwapExec, MemToPCExec, MemToPCMem, MemToPCWB, ImmediateExec, RSrc1, RSrc2, ExecRdst, Hazard);
     C1 : ControlUnit PORT MAP(Op_Code, SwapExec, ResetExec, INTExec, INTMem, INTWB, CU_Signals(17), CU_Signals(16), CU_Signals(15), CU_Signals(14), CU_Signals(13), CU_Signals(12), CU_Signals(11), CU_Signals(10), CU_Signals(9), CU_Signals(8), CU_Signals(7), CU_Signals(6), CU_Signals(5), CU_Signals(4), CU_Signals(3), CU_Signals(2), CU_Signals(1), CU_Signals(0));
-    R1 : RegFile PORT MAP(CLK, Reset, RegWriteWB, ReadReg1, ReadReg2, Write_Reg, Write_Data, Read_Data1_SIG, Read_Data2_SIG);
-    PROCESS (CLK, Read_Data1_SIG, Read_Data2_SIG, Hazard, CU_Signals, Reset, ResetExec, ResetMem, ResetWB, INT, INTExec, INTMem, INTWB, MemReadExec, SwapExec, INRExec, MemToPCExec, ImmediateExec, MemToPCMem, MemToPCWB, RegWriteWB, RDst, RSrc1, RSrc2, Write_Reg, ExecRdst, ExecRsrc1, Op_Code, Write_Data)
+    R1 : RegFile PORT MAP(CLK, Reset, RegWriteWB, ReadReg1, ReadReg2, Write_Reg, Write_Data, Read_Data1_SIG, Read_Data2_SIG, Reg0_Sig, Reg1_Sig, Reg2_Sig, Reg3_Sig, Reg4_Sig, Reg5_Sig, Reg6_Sig, Reg7_Sig);
+    PROCESS (CLK, Read_Data1_SIG, Read_Data2_SIG, Hazard, CU_Signals, Reset, ResetExec, ResetMem, ResetWB, INT, INTExec, INTMem, INTWB, MemReadExec, SwapExec, INRExec, MemToPCExec, ImmediateExec, MemToPCMem, MemToPCWB, RegWriteWB, RDst, RSrc1, RSrc2, Write_Reg, ExecRdst, ExecRsrc1, Op_Code, Write_Data, Reg0_Sig, Reg1_Sig, Reg2_Sig, Reg3_Sig, Reg4_Sig, Reg5_Sig, Reg6_Sig, Reg7_Sig)
     BEGIN
         IF Hazard = '1' AND (INT = '0' AND INTExec = '0' AND INTMem = '0' AND INTWB = '0') THEN
             Register_Write <= '0';
@@ -144,5 +148,13 @@ BEGIN
         Read_Data2 <= Read_Data2_SIG;
         InstRsrc1 <= ReadReg1;
         InstRscr2 <= ReadReg2;
+        Reg0 <= Reg0_Sig;
+        Reg1 <= Reg1_Sig;
+        Reg2 <= Reg2_Sig;
+        Reg3 <= Reg3_Sig;
+        Reg4 <= Reg4_Sig;
+        Reg5 <= Reg5_Sig;
+        Reg6 <= Reg6_Sig;
+        Reg7 <= Reg7_Sig;
     END PROCESS;
 END ArchDecodeStage;

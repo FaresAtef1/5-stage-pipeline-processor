@@ -45,6 +45,14 @@ add wave -position end  sim:/processor/Rsrc2_ID
 add wave -position end  sim:/processor/Inst_Rdst_ID
 add wave -position end  sim:/processor/Inst_Rsrc1_ID
 add wave -position end  sim:/processor/Inst_Rsrc2_ID
+add wave -position end  sim:/processor/Reg0_ID
+add wave -position end  sim:/processor/Reg1_ID
+add wave -position end  sim:/processor/Reg2_ID
+add wave -position end  sim:/processor/Reg3_ID
+add wave -position end  sim:/processor/Reg4_ID
+add wave -position end  sim:/processor/Reg5_ID
+add wave -position end  sim:/processor/Reg6_ID
+add wave -position end  sim:/processor/Reg7_ID
 add wave -position end  sim:/processor/RTI_EX
 add wave -position end  sim:/processor/Register_Write_EX
 add wave -position end  sim:/processor/Branch_EX
@@ -126,6 +134,7 @@ force -freeze RST_Reg 1 0
 force -freeze Init 0 0
 force -freeze RST 0 0  
 force -freeze INT 0 0 
+force -freeze Port_Input "1000000100000011" 0 
 
 run 100 ns
 
@@ -137,13 +146,19 @@ force -freeze RST_Reg 0 0
 force -freeze Init 1 0 
 run 100 ns
 
-force -freeze IN_Inst "1001001000000011" 0 
+force -freeze IN_Inst "0011110001100111" 0 
+run 100 ns
+
+force -freeze IN_Inst "0011011101100111" 0 
+run 100 ns
+
+force -freeze IN_Inst "0011111001100111" 0 
 run 100 ns
 
 force -freeze IN_Inst "1001101100000011" 0 
 run 100 ns
 
-force -freeze IN_Inst "0011110001100111" 0 
+force -freeze IN_Inst "0011010001100111" 0 
 run 100 ns
 
 force -freeze IN_Inst "1010000100000011" 0 
@@ -193,3 +208,23 @@ run 100 ns
 run 100 ns
 run 100 ns
 run 100 ns
+run 100 ns
+run 100 ns
+run 100 ns
+run 100 ns
+run 100 ns
+run 100 ns
+
+# Program
+# Not R1 
+# Or R4, R3, R1
+# And R4, R3, R1
+# Or R4, R3, R1
+# Dec R3
+# Or R4, R3, R1
+# Out R1
+# Protect R2
+# Store R1, 1
+# Store R2, 2
+# Load R5, 1
+# Load R6, 2

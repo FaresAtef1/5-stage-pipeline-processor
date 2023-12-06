@@ -72,7 +72,8 @@ ARCHITECTURE ArchProcessor OF Processor IS
             RTI : OUT STD_LOGIC;
             Push_INT_PC : OUT STD_LOGIC;
             InstRdst, InstRsrc1, InstRscr2 : OUT STD_LOGIC_VECTOR (2 DOWNTO 0);
-            Read_Data1, Read_Data2 : OUT STD_LOGIC_VECTOR (31 DOWNTO 0));
+            Read_Data1, Read_Data2 : OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
+            Reg0, Reg1, Reg2, Reg3, Reg4, Reg5, Reg6, Reg7: OUT STD_LOGIC_VECTOR (31 DOWNTO 0));
     END COMPONENT DecodeStage;
 
     COMPONENT IDEXRegister IS
@@ -296,6 +297,7 @@ ARCHITECTURE ArchProcessor OF Processor IS
     SIGNAL Op_Code_ID : STD_LOGIC_VECTOR(4 DOWNTO 0);
     SIGNAL Rdst_ID, Rsrc1_ID, Rsrc2_ID : STD_LOGIC_VECTOR(2 DOWNTO 0);
     SIGNAL Inst_Rdst_ID, Inst_Rsrc1_ID, Inst_Rsrc2_ID : STD_LOGIC_VECTOR (2 DOWNTO 0);
+    SIGNAL Reg0_ID, Reg1_ID, Reg2_ID, Reg3_ID, Reg4_ID, Reg5_ID, Reg6_ID, Reg7_ID : STD_LOGIC_VECTOR (31 DOWNTO 0);
 
     -- execute stage intermediate signals
     SIGNAL RTI_EX, Register_Write_EX, Branch_EX, Immediate_EX, Mem_Read_EX, Mem_Write_EX, Mem_2Reg_EX, Port_Write_EX, Port_Read_EX, Protect_Write_EX, Write_Flag_EX, Stack_EX, Push_EX, Call_EX, Mem_2PC_EX, Swap_EX, RST_EX, INT_EX, Push_INT_PC_EX : STD_LOGIC;
@@ -331,7 +333,7 @@ BEGIN
         CLK => CLK, Op_Code => Op_Code_ID, Reset => PC_Init, ResetExec => RST_EX, ResetMem => RST_MEM, ResetWB => RST_WB, INT => INT_ID, INTExec => INT_EX, INTMem => INT_MEM, INTWB => INT_WB, MemReadExec => Mem_Read_EX, SwapExec => Swap_EX, INRExec => Port_Read_EX, MemToPCExec => Mem_2PC_EX, ImmediateExec => Immediate_EX, MemToPCMem => Mem_2PC_MEM, MemToPCWB => Mem_2PC_WB, RegWriteWB => Register_Write_WB, RDst => Rdst_ID,
         RSrc1 => Rsrc1_ID, RSrc2 => Rsrc2_ID, Write_Reg => Rdst_WB, ExecRdst => Rdst_EX, ExecRsrc1 => Rsrc1_EX, Write_Data => WriteBack_Data, Register_Write => Register_Write_ID, Branch => Branch_ID, Immediate => Immediate_ID, Mem_Read => Mem_Read_ID, Mem_Write => Mem_Write_ID, Mem_2Reg => Mem_2Reg_ID, Port_Write => Port_Write_ID,
         Port_Read => Port_Read_ID, Protect_Write => Protect_Write_ID, Protect_Val => Protect_Val_ID, Write_Flag => Write_Flag_ID, Stack => Stack_ID, Push => Push_ID, Call => Call_ID, Mem_2PC => Mem_2PC_ID, SWAP => SWAP_ID, RTI => RTI_ID, Push_INT_PC => Push_INT_PC_ID, InstRdst => Inst_Rdst_ID, InstRsrc1 => Inst_Rsrc1_ID, InstRscr2 => Inst_Rsrc2_ID,
-        Read_Data1 => Read_Data1_ID, Read_Data2 => Read_Data2_ID);
+        Read_Data1 => Read_Data1_ID, Read_Data2 => Read_Data2_ID, Reg0 => Reg0_ID, Reg1 => Reg1_ID, Reg2 => Reg2_ID, Reg3 => Reg3_ID, Reg4 => Reg4_ID, Reg5 => Reg5_ID, Reg6 => Reg6_ID, Reg7 => Reg7_ID);
 
     -- idex-register port mapping
     IDEX : IDEXRegister PORT MAP(
