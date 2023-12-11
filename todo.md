@@ -27,3 +27,4 @@
 - [x] Change the decode stage after the added Push_INT_PC signal in the control unit
 - [x] Change Reset of the Reg file
 - [ ] Add port forwarding to the forwarding unit
+- [ ] Don't forward with compare 
