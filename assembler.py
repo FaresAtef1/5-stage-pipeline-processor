@@ -52,6 +52,7 @@ for inst in instructions:
     inst=inst.strip()
     instParts=re.split(r'[,\s]+',inst)
     instructionBits=""
+    EA="00000000000000000000"
     opcode=(instructionsOpCodes.get(instParts[0]))
     instructionBits+=opcode
     if(len(instParts)==1):
@@ -59,7 +60,11 @@ for inst in instructions:
     if(len(instParts)==2):
         instructionBits+=getRegisterAddress(instParts[1])+"00000000"
     if(len(instParts)==3):
-        instructionBits+=getRegisterAddress(instParts[1])+getRegisterAddress(instParts[2])+"00000"
+        if (instParts[0]!="STD" and instParts[0]!="LDD") :
+            instructionBits+=getRegisterAddress(instParts[1])+getRegisterAddress(instParts[2])+"00000"
+        else:
+            EA=format(int(instParts[2]),'020b')[-20:]
+            instructionBits+=getRegisterAddress(instParts[1])+getRegisterAddress(instParts[2])+"0"+EA[0:4]
     if(len(instParts)==4):
         instructionBits+=getRegisterAddress(instParts[1])+getRegisterAddress(instParts[2])+getRegisterAddress(instParts[3])+"00"
     binaryFile.writelines([instructionBits,"\n"])
@@ -69,8 +74,10 @@ for inst in instructions:
     if(instParts[0] in immediateInstructions):
         immediateVal=format(int(instParts[2]),'016b')[-16:]
         binaryFile.writelines([immediateVal,'\n'])
-        
+    if(instParts[0]=="STD" or instParts[0]=="LDD"):
+        binaryFile.writelines([EA[-16:],'\n'])
 
+        
 insrtuctionsFile.close()
 binaryFile.close()
 
