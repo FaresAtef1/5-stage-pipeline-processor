@@ -1,6 +1,6 @@
-binaryFile= open("binaryCode.txt",mode="r")
-wavesFile=open("waves.txt",mode="r")
-doFile=open("doFile.txt",mode="w")
+binaryFile= open("assembler/binaryCode.txt",mode="r")
+wavesFile=open("assembler/waves.txt",mode="r")
+doFile=open("assembler/doFile.txt",mode="w")
 doFile.writelines(["quit -sim","\n","vcom Processor.vhd","\n","vsim -t ns Processor\n"])
 doFile.writelines([
     "force -freeze CLK 1 0, 0 {50 ns} -r 100\n",
