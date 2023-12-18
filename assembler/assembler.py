@@ -11,8 +11,8 @@ def getRegisterAddress(reg):
     return "000"
 
 
-insrtuctionsFile=   open("instructions.txt",mode="r")
-binaryFile= open("binaryCode.txt",mode="w")
+insrtuctionsFile=   open("assembler/instructions.txt",mode="r")
+binaryFile= open("assembler/binaryCode.txt",mode="w")
 instructions= insrtuctionsFile.readlines()
 instructionsOpCodes={
     "NOP":"00000",
