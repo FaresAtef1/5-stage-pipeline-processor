@@ -49,11 +49,16 @@ instructionsOpCodes={
 
 immediateInstructions=["BITSET","RCL","RCR","LDM"]
 for inst in instructions:
+    if(inst.startswith("//")):
+        continue
     inst=inst.strip()
     instParts=re.split(r'[,\s]+',inst)
     instructionBits=""
     EA="00000000000000000000"
     opcode=(instructionsOpCodes.get(instParts[0]))
+    if(opcode==None):
+        print(f"error happened in {inst}")
+        continue
     instructionBits+=opcode
     if(len(instParts)==1):
         instructionBits+="00000000000"
