@@ -26,9 +26,11 @@ ENTITY MemoryStage IS
         PC_inc : IN STD_LOGIC_VECTOR (31 DOWNTO 0);
         IN_Port_Data : IN STD_LOGIC_VECTOR (31 DOWNTO 0);
         Flags : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
+        Branch_Mem : IN STD_LOGIC;
         Port_Read_Data : OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
         Mem_Read_Data : OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
-        Output_Port_Data : OUT STD_LOGIC_VECTOR (31 DOWNTO 0)
+        Output_Port_Data : OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
+        Jump : OUT STD_LOGIC -- Jump to the address in the ALU  
     );
 END MemoryStage;
 
@@ -80,6 +82,7 @@ ARCHITECTURE MemoryStageArch OF MemoryStage IS
 
 BEGIN
     WR_EN <= MemWrite AND (NOT Protected_Mem);
+    Jump <= Branch_Mem AND Flags(0);
     WDD : WriteDataDecoder PORT MAP(
         R1 => R1,
         PC_inc => PC_inc,

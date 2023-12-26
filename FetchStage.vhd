@@ -7,7 +7,7 @@ USE ieee.std_logic_textio.ALL;
 ENTITY FetchStage IS
     PORT (
         CLK : IN STD_LOGIC;
-        Mem_Out, PC_INC_Decode, PC_INC_Mem, ALU_Res : IN STD_LOGIC_VECTOR (31 DOWNTO 0); -- PC_INC is PC + 1 from Decode Stage
+        Mem_Out, PC_INC_Decode, ALU_Res : IN STD_LOGIC_VECTOR (31 DOWNTO 0); -- PC_INC is PC + 1 from Decode Stage
         RDst_Exec : IN STD_LOGIC_VECTOR (31 DOWNTO 0);
         Reset_Mem, Call_Exec, Branch_Exec, Branch_Mem, Mem_2PC, Zero_flag, Init, PC_Init : IN STD_LOGIC;
         IN_Inst : IN STD_LOGIC_VECTOR (15 DOWNTO 0);
@@ -40,15 +40,15 @@ ARCHITECTURE ArchFetchStage OF FetchStage IS
 
     COMPONENT PCDecoder IS
         PORT (
-            Rds : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+            Rds : IN STD_LOGIC_VECTOR(31 DOWNTO 0); --Rdst_Execute
             memory : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
             PC_inc : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-            PC_inc_mem : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+            Rdst_Mem : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
             call : IN STD_LOGIC;
             Zero_Flag : IN STD_LOGIC;
             mem_to_PC : IN STD_LOGIC;
             branch : IN STD_LOGIC;
-            prev_branch : IN STD_LOGIC;
+            Branch_Mem : IN STD_LOGIC;
             PC_out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0));
     END COMPONENT PCDecoder;
 
@@ -80,7 +80,7 @@ ARCHITECTURE ArchFetchStage OF FetchStage IS
     SIGNAL NOT_CLK : STD_LOGIC;
 BEGIN
     NOT_CLK <= NOT CLK;
-    PCD0 : PCDecoder PORT MAP(RDst_Exec, Mem_Out, PC_INC_Decode, PC_INC_Mem, Call_Exec, Zero_flag, Mem_2PC, Branch_Exec, Branch_Mem, PC_Decoder_Out);
+    PCD0 : PCDecoder PORT MAP(RDst_Exec, Mem_Out, PC_INC_Decode, ALU_Res, Call_Exec, Zero_flag, Mem_2PC, Branch_Exec, Branch_Mem, PC_Decoder_Out);
     PC0 : GenericRegister GENERIC MAP(32) PORT MAP('1', PC_Init, PC_Decoder_Out, x"00000000", PC);
     NOT_Init <= NOT Init;
     Inst_Mem : Memory GENERIC MAP(

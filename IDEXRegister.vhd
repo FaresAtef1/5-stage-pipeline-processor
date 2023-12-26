@@ -3,6 +3,7 @@ USE ieee.std_logic_1164.ALL;
 
 ENTITY IDEXRegister IS
     PORT (
+        Jump : IN STD_LOGIC;
         RST_Reg : IN STD_LOGIC;
         Clk : IN STD_LOGIC;
         Register_Write : IN STD_LOGIC;
@@ -63,10 +64,9 @@ END IDEXRegister;
 
 ARCHITECTURE ArchIDEXRegister OF IDEXRegister IS
 BEGIN
-    PROCESS (Clk, RST_Reg)
+    PROCESS (Clk, RST_Reg,Jump)
     BEGIN
-
-        IF RST_Reg = '1' THEN
+        IF RST_Reg = '1'  OR rising_edge(Jump) THEN
             Register_Write_Out <= '0';
             Branch_Out <= '0';
             Immediate_Out <= '0';

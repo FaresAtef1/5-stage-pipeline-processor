@@ -2,6 +2,8 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 ENTITY IFIDRegister IS
     PORT (
+        Call_Exec : IN STD_LOGIC;
+        Jump : IN STD_LOGIC;
         RST_Reg : IN STD_LOGIC;
         Clk : IN STD_LOGIC;
         RST : IN STD_LOGIC;
@@ -21,9 +23,9 @@ END IFIDRegister;
 
 ARCHITECTURE ArchIFIDRegister OF IFIDRegister IS
 BEGIN
-    PROCESS (Clk, RST_Reg)
+    PROCESS (Clk, RST_Reg,Jump,Call_Exec)
     BEGIN
-        IF RST_Reg = '1' THEN
+        IF RST_Reg ='1' OR rising_edge(Jump) or rising_edge(Call_Exec) THEN
             RST_Out <= '0';
             INT_Out <= '0';
             INC_PC_Out <= (OTHERS => '0');
