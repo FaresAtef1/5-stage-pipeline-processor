@@ -19,19 +19,17 @@ force -freeze IN_Inst "0101000100000000" 0
 run 100 ns
 force -freeze IN_Inst "0000000000000110" 0 
 run 100 ns
-force -freeze IN_Inst "1001001000000000" 0 
+force -freeze IN_Inst "0101001000000000" 0 
 run 100 ns
-force -freeze IN_Inst "1001110000000000" 0 
+force -freeze IN_Inst "0000000000000101" 0 
 run 100 ns
-force -freeze IN_Inst "1111100100000000" 0 
+force -freeze IN_Inst "1101000100000000" 0 
 run 100 ns
-force -freeze IN_Inst "1001001000000000" 0 
+force -freeze IN_Inst "0000000000000010" 0 
 run 100 ns
-force -freeze IN_Inst "1100101000000000" 0 
+force -freeze IN_Inst "1101001000000000" 0 
 run 100 ns
-force -freeze IN_Inst "0100110100000000" 0 
-run 100 ns
-force -freeze IN_Inst "0100100100000000" 0 
+force -freeze IN_Inst "0000000000000011" 0 
 run 100 ns
 add wave -position end  sim:/processor/CLK
 add wave -position end  sim:/processor/RST
@@ -167,4 +165,4 @@ force -freeze Init 0 0
 run 100 ns
 force -freeze PC_Init 0 0 
 
-run 900 ns
+run 600 ns

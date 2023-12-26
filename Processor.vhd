@@ -30,6 +30,9 @@ ARCHITECTURE ArchProcessor OF Processor IS
 
     COMPONENT IFIDRegister IS
         PORT (
+            INT_Exec : IN STD_LOGIC;
+            INT_Mem : IN STD_LOGIC;
+            INT_WB : IN STD_LOGIC;
             Call_Exec : IN STD_LOGIC;
             Jump : IN STD_LOGIC;
             RST_Reg : IN STD_LOGIC;
@@ -337,10 +340,10 @@ ARCHITECTURE ArchProcessor OF Processor IS
 
 BEGIN
     -- fetch stage port mapping
-    FETCH : FetchStage PORT MAP(CLK, Memory_Out_WB, INC_PC_ID,ALU_Result_MEM, Memory_Data_EX, Mem_Init, Call_EX, Branch_EX, Branch_MEM, Mem_2PC_WB, Flags_MEM(0), Init, PC_Init, In_Inst, Instruction_IF, Immediate_Val_IF, INC_PC_IF);
+    FETCH : FetchStage PORT MAP(CLK, Memory_Out_WB, INC_PC_ID, ALU_Result_MEM, Memory_Data_EX, Mem_Init, Call_EX, Branch_EX, Branch_MEM, Mem_2PC_WB, Flags_MEM(0), Init, PC_Init, In_Inst, Instruction_IF, Immediate_Val_IF, INC_PC_IF);
 
     -- ifid-register port mapping
-    IFID : IFIDRegister PORT MAP(Call_EX,Jump, RST_Reg, CLK, RST, INT, IFIDEnable, INC_PC_IF, Instruction_IF, Immediate_Val_IF, RST_ID, INT_ID, INC_PC_ID, Op_Code_ID, Rdst_ID, Rsrc1_ID, Rsrc2_ID, Immediate_Val_ID);
+    IFID : IFIDRegister PORT MAP(INT_EX,INT_MEM,INT_WB,Call_EX, Jump, RST_Reg, CLK, RST, INT, IFIDEnable, INC_PC_IF, Instruction_IF, Immediate_Val_IF, RST_ID, INT_ID, INC_PC_ID, Op_Code_ID, Rdst_ID, Rsrc1_ID, Rsrc2_ID, Immediate_Val_ID);
 
     -- decode stage port mapping
     DECODE : DecodeStage PORT MAP(
@@ -365,7 +368,7 @@ BEGIN
         RTI_MEM, Swap_MEM, Register_Write_MEM, Mem_2PC_MEM, Mem_2Reg_MEM, Push_MEM, Stack_MEM, Push_INT_PC_MEM, Call_MEM, Mem_Write_MEM, Mem_Read_MEM, Branch_MEM, Port_Write_MEM, Port_Read_MEM, RST_MEM, INT_MEM, Stack_Pointer_MEM, INC_PC_MEM, ALU_Result_MEM, Memory_Data_MEM, Flags_MEM, Rdst_MEM, Protect_State_MEM);
 
     -- memory stage port mapping
-    MEMORY : MemoryStage PORT MAP(Clk,Mem_Write_MEM, Mem_Read_MEM, Call_MEM, INT_MEM, INT_WB, RST_WB, Push_MEM, Push_INT_PC_MEM, Push_INT_PC_WB, Protect_State_MEM, Port_Write_MEM, Port_Read_MEM, Mem_Init, ALU_Result_MEM, Memory_Data_MEM, Stack_Pointer_MEM, INC_PC_MEM, Port_Input, Flags_MEM, Branch_MEM, Port_Out, Memory_Out, Out_Port_Data, Jump);
+    MEMORY : MemoryStage PORT MAP(Clk, Mem_Write_MEM, Mem_Read_MEM, Call_MEM, INT_MEM, INT_WB, RST_WB, Push_MEM, Push_INT_PC_MEM, Push_INT_PC_WB, Protect_State_MEM, Port_Write_MEM, Port_Read_MEM, Mem_Init, ALU_Result_MEM, Memory_Data_MEM, Stack_Pointer_MEM, INC_PC_MEM, Port_Input, Flags_MEM, Branch_MEM, Port_Out, Memory_Out, Out_Port_Data, Jump);
 
     -- memwb-register port mapping
     MEMWB : MEMWBRegister PORT MAP(
