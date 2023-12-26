@@ -7,6 +7,7 @@ USE IEEE.math_real.ALL;
 
 ENTITY MemoryStage IS
     PORT (
+        Clk : IN STD_LOGIC;
         MemWrite : IN STD_LOGIC;
         MemRead : IN STD_LOGIC;
         Call : IN STD_LOGIC;
@@ -79,9 +80,12 @@ ARCHITECTURE MemoryStageArch OF MemoryStage IS
     SIGNAL write_data_out : STD_LOGIC_VECTOR(31 DOWNTO 0);
     SIGNAL Address_out : STD_LOGIC_VECTOR(11 DOWNTO 0);
     SIGNAL WR_EN : STD_LOGIC;
+    SIGNAL RD_EN : STD_LOGIC;
 
 BEGIN
-    WR_EN <= MemWrite AND (NOT Protected_Mem);
+
+    WR_EN <= MemWrite AND (NOT Protected_Mem) AND (NOT Clk);
+    RD_EN <= MemRead  AND (NOT Clk);
     Jump <= Branch_Mem AND Flags(0);
     WDD : WriteDataDecoder PORT MAP(
         R1 => R1,
@@ -106,7 +110,7 @@ BEGIN
     PORT MAP(
         RST => Mem_Init,
         WR_EN => WR_EN,
-        RD_EN => MemRead,
+        RD_EN => RD_EN,
         Address => Address_out,
         Write_Data => write_data_out,
         Read_Data => Mem_Read_Data);

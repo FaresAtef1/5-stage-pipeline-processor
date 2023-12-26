@@ -230,6 +230,7 @@ ARCHITECTURE ArchProcessor OF Processor IS
 
     COMPONENT MemoryStage IS
         PORT (
+            Clk : IN STD_LOGIC;
             MemWrite : IN STD_LOGIC;
             MemRead : IN STD_LOGIC;
             Call : IN STD_LOGIC;
@@ -364,7 +365,7 @@ BEGIN
         RTI_MEM, Swap_MEM, Register_Write_MEM, Mem_2PC_MEM, Mem_2Reg_MEM, Push_MEM, Stack_MEM, Push_INT_PC_MEM, Call_MEM, Mem_Write_MEM, Mem_Read_MEM, Branch_MEM, Port_Write_MEM, Port_Read_MEM, RST_MEM, INT_MEM, Stack_Pointer_MEM, INC_PC_MEM, ALU_Result_MEM, Memory_Data_MEM, Flags_MEM, Rdst_MEM, Protect_State_MEM);
 
     -- memory stage port mapping
-    MEMORY : MemoryStage PORT MAP(Mem_Write_MEM, Mem_Read_MEM, Call_MEM, INT_MEM, INT_WB, RST_WB, Push_MEM, Push_INT_PC_MEM, Push_INT_PC_WB, Protect_State_MEM, Port_Write_MEM, Port_Read_MEM, Mem_Init, ALU_Result_MEM, Memory_Data_MEM, Stack_Pointer_MEM, INC_PC_MEM, Port_Input, Flags_MEM, Branch_MEM, Port_Out, Memory_Out, Out_Port_Data, Jump);
+    MEMORY : MemoryStage PORT MAP(Clk,Mem_Write_MEM, Mem_Read_MEM, Call_MEM, INT_MEM, INT_WB, RST_WB, Push_MEM, Push_INT_PC_MEM, Push_INT_PC_WB, Protect_State_MEM, Port_Write_MEM, Port_Read_MEM, Mem_Init, ALU_Result_MEM, Memory_Data_MEM, Stack_Pointer_MEM, INC_PC_MEM, Port_Input, Flags_MEM, Branch_MEM, Port_Out, Memory_Out, Out_Port_Data, Jump);
 
     -- memwb-register port mapping
     MEMWB : MEMWBRegister PORT MAP(
