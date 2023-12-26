@@ -13,6 +13,7 @@ ENTITY ExecuteStage IS
         Stack : IN STD_LOGIC;
         Stack_Mem : IN STD_LOGIC;
         RTI_WB : IN STD_LOGIC;
+        Swap_Mem : IN STD_LOGIC;
         RTI_Flags : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
         Prev_ALU_Res : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
         Prev_Mem_Res : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
@@ -48,6 +49,7 @@ ARCHITECTURE ArchExecuteStage OF ExecuteStage IS
 
     COMPONENT ForwardingUnit IS
         PORT (
+            Swap_Mem : IN STD_LOGIC;
             PrevALURes, PrevMemRes : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
             ExecWB, MemWB : IN STD_LOGIC;
             RSrc1, RSrc2 : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
@@ -98,10 +100,10 @@ ARCHITECTURE ArchExecuteStage OF ExecuteStage IS
 BEGIN
     AC1 : ALUControlUnit PORT MAP(Op_Code, ALU_Sel);
     A1 : ALU PORT MAP(FR_Out(2), ALU_Sel, ALU_Op1, ALU_Op2, ALU_Result, ALU_Flags);
-    F1 : ForwardingUnit PORT MAP(Rdst_Mem, Rdst_WB, Register_Write_Mem, Register_Write_WB, Rsrc1, Rsrc2, Forward_Data1, Forward_Data2);
+    F1 : ForwardingUnit PORT MAP(Swap_Mem,Rdst_Mem, Rdst_WB, Register_Write_Mem, Register_Write_WB, Rsrc1, Rsrc2, Forward_Data1, Forward_Data2);
     PM1 : Memory GENERIC MAP(1, 12, 1) PORT MAP(Reset_Regs, Protect_Write, Read_Enable, Protect_Address(11 DOWNTO 0), Protect_Val, Protect_Out); --- protect memory
     FR1 : GenericRegister GENERIC MAP(3) PORT MAP(FR_EN, Reset_Regs, Flag_Data, "000", FR_Out);-- Flags Register
-    SP1 : GenericRegister PORT MAP(Stack_Mem, Reset_Regs, Prev_ALU_Res, x"FFFFFFFF", ALU_SP);-- stack pointer Register
+    SP1 : GenericRegister PORT MAP(Stack_Mem, Reset_Regs, Prev_ALU_Res, x"00000FFE", ALU_SP);-- stack pointer Register
     Reset_Regs <= Reset OR Reset_Mem;
     Stack_Pointer <= ALU_SP;
     -- operand 1 mux
@@ -121,7 +123,7 @@ BEGIN
         Read_Data1 WHEN Forward_Data1 = "00" ELSE
         Prev_ALU_Res WHEN Forward_Data1 = "10" ELSE
         Prev_Mem_Res WHEN Forward_Data1 = "11";
-    --  protect address mux !!!!------> protect memory module isn't implemented
+    --  protect address mux 
     Protect_Address <=
         Read_Data1 WHEN Protect_Write = '1' ELSE
         Immediate_Val;

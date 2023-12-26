@@ -1,1 +1,2 @@
-LDM R1,64
+IN R1
+INC R1

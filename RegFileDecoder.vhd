@@ -12,7 +12,7 @@ ENTITY RegFileDecoder IS
         Reg1 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0));
 END RegFileDecoder;
 
--- There is no scenario in which both SingleOp and Swap are equal to 1
+-- There is no scenario in which both SingleOp and Swap are equal to 1 -- Sike!
 
 ARCHITECTURE RegFileDecoderArch OF RegFileDecoder IS
 BEGIN
@@ -20,10 +20,10 @@ BEGIN
     BEGIN
         IF SingleOp = '0' AND Swap = '0' THEN
             Reg1 <= RSrc1;
-        ELSIF SingleOp = '1' THEN
-            Reg1 <= Rdst;
         ELSIF Swap = '1' THEN
             Reg1 <= RExec;
+        ELSIF SingleOp = '1' THEN
+            Reg1 <= Rdst;
         ELSE -- will never happen
             Reg1 <= Rsrc1;
         END IF;
