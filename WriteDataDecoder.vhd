@@ -20,12 +20,13 @@ ARCHITECTURE WriteDataDecoderArch OF WriteDataDecoder IS
 BEGIN
     PROCESS (R1, PC_inc, Flags, Push_INT_PC, Push_INT_PC_WB, Call)
     BEGIN
+        
         IF (Call = '1' OR Push_INT_PC = '1') THEN
-            write_data_out <= PC_inc;
+            write_data_out <= PC_inc after 10 ns;
         ELSIF Push_INT_PC_WB = '1' THEN
-            write_data_out <= ("00000000000000000000000000000") & Flags(2 DOWNTO 0);
+            write_data_out <= ("00000000000000000000000000000") & Flags(2 DOWNTO 0) after 10 ns;
         ELSE
-            write_data_out <= R1;
+            write_data_out <= R1 after 10 ns;
         END IF;
     END PROCESS;
 

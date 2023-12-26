@@ -125,3 +125,5 @@ add wave -position end  sim:/processor/IFIDEnable
 add wave -position insertpoint sim:/processor/DECODE/C1/*
 add wave -position insertpoint sim:/processor/FETCH/PCD0/*
 add wave -position insertpoint sim:/processor/FETCH/PC0/*
+add wave -position insertpoint sim:/processor/MEMORY/MAD/*
+add wave -position insertpoint sim:/processor/EXECUTE/F1/*

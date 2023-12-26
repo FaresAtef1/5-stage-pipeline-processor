@@ -15,17 +15,13 @@ force -freeze Mem_Init 0 0
 run 100 ns
 force -freeze RST_Reg 0 0 
 force -freeze Init 1 0 
-force -freeze IN_Inst "1011000100000000" 0 
+force -freeze IN_Inst "1001000100000000" 0 
 run 100 ns
-force -freeze IN_Inst "0000000000000010" 0 
+force -freeze IN_Inst "1100100100000000" 0 
 run 100 ns
-force -freeze IN_Inst "1111000100000000" 0 
+force -freeze IN_Inst "1001101000000000" 0 
 run 100 ns
-force -freeze IN_Inst "0001101110010100" 0 
-run 100 ns
-force -freeze IN_Inst "0001111011011000" 0 
-run 100 ns
-force -freeze IN_Inst "1001011000000000" 0 
+force -freeze IN_Inst "0100101000000000" 0 
 run 100 ns
 add wave -position end  sim:/processor/CLK
 add wave -position end  sim:/processor/RST
@@ -154,9 +150,11 @@ add wave -position end  sim:/processor/IFIDEnable
 add wave -position insertpoint sim:/processor/DECODE/C1/*
 add wave -position insertpoint sim:/processor/FETCH/PCD0/*
 add wave -position insertpoint sim:/processor/FETCH/PC0/*
+add wave -position insertpoint sim:/processor/MEMORY/MAD/*
+add wave -position insertpoint sim:/processor/EXECUTE/F1/*
 force -freeze PC_Init 1 0 
 force -freeze Init 0 0 
 run 100 ns
 force -freeze PC_Init 0 0 
 
-run 600 ns
+run 400 ns

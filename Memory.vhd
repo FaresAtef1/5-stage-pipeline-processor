@@ -26,6 +26,7 @@ ARCHITECTURE MemoryArch OF Memory IS
 BEGIN
     PROCESS (WR_EN, RD_EN, Address, Write_Data, RST)
     BEGIN
+
         IF RST = '1' THEN
             MemoryArray <= (OTHERS => (OTHERS => '0'));
         END IF;

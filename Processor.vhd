@@ -336,7 +336,7 @@ ARCHITECTURE ArchProcessor OF Processor IS
 
 BEGIN
     -- fetch stage port mapping
-    FETCH : FetchStage PORT MAP(CLK, Memory_Out_WB, INC_PC_ID,ALU_Result_MEM, ALU_Result_EX, Mem_Init, Call_EX, Branch_EX, Branch_MEM, Mem_2PC_WB, Flags_MEM(0), Init, PC_Init, In_Inst, Instruction_IF, Immediate_Val_IF, INC_PC_IF);
+    FETCH : FetchStage PORT MAP(CLK, Memory_Out_WB, INC_PC_ID,ALU_Result_MEM, Memory_Data_EX, Mem_Init, Call_EX, Branch_EX, Branch_MEM, Mem_2PC_WB, Flags_MEM(0), Init, PC_Init, In_Inst, Instruction_IF, Immediate_Val_IF, INC_PC_IF);
 
     -- ifid-register port mapping
     IFID : IFIDRegister PORT MAP(Call_EX,Jump, RST_Reg, CLK, RST, INT, IFIDEnable, INC_PC_IF, Instruction_IF, Immediate_Val_IF, RST_ID, INT_ID, INC_PC_ID, Op_Code_ID, Rdst_ID, Rsrc1_ID, Rsrc2_ID, Immediate_Val_ID);
