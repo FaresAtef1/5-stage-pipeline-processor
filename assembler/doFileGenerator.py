@@ -10,7 +10,7 @@ doFile.writelines([
     "force -freeze Init 0 0 \n",
     "force -freeze RST 0 0  \n",
     "force -freeze INT 0 0 \n",
-    "force -freeze Port_Input \"1000000100000011\" 0 \n",
+    "force -freeze Port_Input \"10000001000000111000000100000011\" 0 \n",
     "run 100 ns\n",
     "force -freeze PC_Init 0 0 \n",
     "force -freeze Mem_Init 0 0\n" ,
