@@ -150,6 +150,7 @@ add wave -position end  sim:/processor/Port_Read_WB
 add wave -position end  sim:/processor/RST_WB
 add wave -position end  sim:/processor/Memory_Out_WB
 add wave -position end  sim:/processor/ALU_Result_WB
+add wave -position end  sim:/processor/INC_PC_WB
 add wave -position end  sim:/processor/Port_Out_WB
 add wave -position end  sim:/processor/WriteBack_Data
 add wave -position end  sim:/processor/EA
@@ -160,6 +161,7 @@ add wave -position insertpoint sim:/processor/FETCH/PCD0/*
 add wave -position insertpoint sim:/processor/FETCH/PC0/*
 add wave -position insertpoint sim:/processor/MEMORY/MAD/*
 add wave -position insertpoint sim:/processor/EXECUTE/F1/*
+add wave -position insertpoint sim:/processor/MEMORY/MEM/*
 force -freeze PC_Init 1 0 
 force -freeze Init 0 0 
 run 100 ns

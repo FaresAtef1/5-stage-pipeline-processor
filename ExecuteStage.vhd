@@ -23,11 +23,16 @@ ENTITY ExecuteStage IS
         Effective_Address : IN STD_LOGIC_VECTOR(19 DOWNTO 0);
         Reset : IN STD_LOGIC; -- Not Reset_Exec, It is Reset_Init (in the processor module)
         Reset_Mem : IN STD_LOGIC;
+        Push_INT_PC_EX : IN STD_LOGIC;
+        Push_INT_PC_Mem : IN STD_LOGIC;
+        INC_PC_IDEX : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+        INC_PC_MEMWB : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
         ALU_Result : OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
         Protect_Out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);-- to match generic map
         Flags : OUT STD_LOGIC_VECTOR (2 DOWNTO 0);
         Stack_Pointer : OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
-        Mem_Data : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+        Mem_Data : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+        INC_PC_OUT_EX : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
 
     );
 END ExecuteStage;
@@ -41,9 +46,12 @@ ARCHITECTURE ArchExecuteStage OF ExecuteStage IS
             Flags : OUT STD_LOGIC_VECTOR(2 DOWNTO 0)
         );
     END COMPONENT ALU;
-    COMPONENT ALUControlUnit IS PORT (
-        OpCode : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
-        ALUOP : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
+    COMPONENT ALUControlUnit IS
+        PORT (
+            OpCode : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
+            ALUOP : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+            Push_INT_PC_EX : IN STD_LOGIC;
+            Push_INT_PC_Mem : IN STD_LOGIC
         );
     END COMPONENT ALUControlUnit;
 
@@ -98,7 +106,7 @@ ARCHITECTURE ArchExecuteStage OF ExecuteStage IS
     SIGNAL Read_Enable : STD_LOGIC;
     SIGNAL Reset_Regs : STD_LOGIC;
 BEGIN
-    AC1 : ALUControlUnit PORT MAP(Op_Code, ALU_Sel);
+    AC1 : ALUControlUnit PORT MAP(Op_Code, ALU_Sel, Push_INT_PC_EX, Push_INT_PC_Mem);
     A1 : ALU PORT MAP(FR_Out(2), ALU_Sel, ALU_Op1, ALU_Op2, ALU_Result, ALU_Flags);
     F1 : ForwardingUnit PORT MAP(Swap_Mem,Rdst_Mem, Rdst_WB, Register_Write_Mem, Register_Write_WB, Rsrc1, Rsrc2, Forward_Data1, Forward_Data2);
     PM1 : Memory GENERIC MAP(1, 12, 1) PORT MAP(Reset_Regs, Protect_Write, Read_Enable, Protect_Address(11 DOWNTO 0), Protect_Val, Protect_Out); --- protect memory
@@ -106,6 +114,7 @@ BEGIN
     SP1 : GenericRegister PORT MAP(Stack_Mem, Reset_Regs, Prev_ALU_Res, x"00000FFE", ALU_SP);-- stack pointer Register
     Reset_Regs <= Reset OR Reset_Mem;
     Stack_Pointer <= ALU_SP;
+    INC_PC_OUT_EX <= INC_PC_IDEX WHEN Push_INT_PC_EX= '0' ELSE INC_PC_MEMWB;
     -- operand 1 mux
     ALU_Op1 <=
         Read_Data1 WHEN Stack = '0' AND Forward_Data1 = "00" ELSE

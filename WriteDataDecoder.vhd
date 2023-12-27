@@ -22,11 +22,11 @@ BEGIN
     BEGIN
         
         IF (Call = '1' OR Push_INT_PC = '1') THEN
-            write_data_out <= PC_inc after 10 ns;
+            write_data_out <= PC_inc ;
         ELSIF Push_INT_PC_WB = '1' THEN
-            write_data_out <= ("00000000000000000000000000000") & Flags(2 DOWNTO 0) after 10 ns;
+            write_data_out <= ("00000000000000000000000000000") & Flags(2 DOWNTO 0) ;
         ELSE
-            write_data_out <= R1 after 10 ns;
+            write_data_out <= R1 ;
         END IF;
     END PROCESS;
 

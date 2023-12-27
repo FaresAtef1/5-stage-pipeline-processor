@@ -17,6 +17,7 @@ ENTITY MEMWBRegister IS
         Memory_Data : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
         ALU_Result : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
         Rdst : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+        INC_PC : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
         -- output ports
         RTI_Out : OUT STD_LOGIC;
         Register_Write_Out : OUT STD_LOGIC;
@@ -29,7 +30,8 @@ ENTITY MEMWBRegister IS
         Port_Val_Out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
         Memory_Data_Out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
         ALU_Result_Out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-        Rdst_Out : OUT STD_LOGIC_VECTOR(2 DOWNTO 0)
+        Rdst_Out : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+        INC_PC_OUT : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
     );
 
 END MEMWBRegister;
@@ -51,6 +53,7 @@ BEGIN
             Port_Val_Out<= (OTHERS => '0');
             Memory_Data_Out <= (OTHERS => '0');
             Rdst_Out <= (OTHERS => '0');
+            INC_PC_OUT <= (OTHERS => '0');
         ELSIF RISING_EDGE(Clk) THEN
             RTI_Out <= RTI;
             Register_Write_Out <= Register_Write;
@@ -64,7 +67,9 @@ BEGIN
             Port_Val_Out<= Port_Val;
             Memory_Data_Out <= Memory_Data;
             Rdst_Out <= Rdst;
+            INC_PC_OUT <= INC_PC;
         END IF;
     END PROCESS;
+
 
 END ArchMEMWBRegister;

@@ -26,7 +26,7 @@ END IFIDRegister;
 
 ARCHITECTURE ArchIFIDRegister OF IFIDRegister IS
 BEGIN
-    PROCESS (Clk, RST_Reg,Jump,Call_Exec)
+    PROCESS (Clk, RST_Reg,Jump,Call_Exec,INT_Exec,INT_Mem)
     BEGIN
         IF RST_Reg ='1' OR rising_edge(Jump) or rising_edge(Call_Exec) OR INT_Exec='1' OR INT_Mem ='1' OR INT_WB ='1' THEN
             RST_Out <= '0';

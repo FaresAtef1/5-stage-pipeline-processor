@@ -166,14 +166,18 @@ ARCHITECTURE ArchProcessor OF Processor IS
             Read_Data2 : IN STD_LOGIC_VECTOR (31 DOWNTO 0);
             Immediate_Val : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
             Effective_Address : IN STD_LOGIC_VECTOR(19 DOWNTO 0);
-            Reset : IN STD_LOGIC;
+            Reset : IN STD_LOGIC; -- Not Reset_Exec, It is Reset_Init (in the processor module)
             Reset_Mem : IN STD_LOGIC;
+            Push_INT_PC_EX : IN STD_LOGIC;
+            Push_INT_PC_Mem : IN STD_LOGIC;
+            INC_PC_IDEX : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+            INC_PC_MEMWB : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
             ALU_Result : OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
             Protect_Out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);-- to match generic map
             Flags : OUT STD_LOGIC_VECTOR (2 DOWNTO 0);
             Stack_Pointer : OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
-            Mem_Data : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
-
+            Mem_Data : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+            INC_PC_OUT_EX : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
         );
     END COMPONENT ExecuteStage;
 
@@ -277,6 +281,7 @@ ARCHITECTURE ArchProcessor OF Processor IS
             Memory_Data : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
             ALU_Result : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
             Rdst : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+            INC_PC : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
             -- output ports
             RTI_Out : OUT STD_LOGIC;
             Register_Write_Out : OUT STD_LOGIC;
@@ -289,7 +294,8 @@ ARCHITECTURE ArchProcessor OF Processor IS
             Port_Val_Out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
             Memory_Data_Out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
             ALU_Result_Out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-            Rdst_Out : OUT STD_LOGIC_VECTOR(2 DOWNTO 0)
+            Rdst_Out : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+            INC_PC_OUT : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
         );
     END COMPONENT MEMWBRegister;
 
@@ -320,7 +326,7 @@ ARCHITECTURE ArchProcessor OF Processor IS
     -- execute stage intermediate signals
     SIGNAL RTI_EX, Register_Write_EX, Branch_EX, Immediate_EX, Mem_Read_EX, Mem_Write_EX, Mem_2Reg_EX, Port_Write_EX, Port_Read_EX, Protect_Write_EX, Write_Flag_EX, Stack_EX, Push_EX, Call_EX, Mem_2PC_EX, Swap_EX, RST_EX, INT_EX, Push_INT_PC_EX : STD_LOGIC;
     SIGNAL Rdst_EX, Rsrc1_EX, Rsrc2_EX, Flags_EX : STD_LOGIC_VECTOR(2 DOWNTO 0);
-    SIGNAL Read_Data1_EX, Read_Data2_EX, INC_PC_EX, Stack_Pointer_EX, ALU_Result_EX, Memory_Data_EX : STD_LOGIC_VECTOR(31 DOWNTO 0);
+    SIGNAL Read_Data1_EX, Read_Data2_EX, INC_PC_EX, Stack_Pointer_EX, ALU_Result_EX, Memory_Data_EX,INC_PC_EX_OUT : STD_LOGIC_VECTOR(31 DOWNTO 0);
     SIGNAL Op_Code_EX : STD_LOGIC_VECTOR(4 DOWNTO 0);
     SIGNAL Protect_Val_EX, Protect_State_EX : STD_LOGIC_VECTOR (0 DOWNTO 0); -- helps with generics
 
@@ -332,7 +338,7 @@ ARCHITECTURE ArchProcessor OF Processor IS
     -- write back stage intermediate signals
     SIGNAL Rdst_WB : STD_LOGIC_VECTOR(2 DOWNTO 0);
     SIGNAL Register_Write_WB, RTI_WB, INT_WB, Push_INT_PC_WB, Mem_2PC_WB, Mem_2Reg_WB, Port_Read_WB, RST_WB : STD_LOGIC;
-    SIGNAL Memory_Out_WB, ALU_Result_WB, Port_Out_WB, WriteBack_Data : STD_LOGIC_VECTOR (31 DOWNTO 0);
+    SIGNAL Memory_Out_WB, ALU_Result_WB, Port_Out_WB, WriteBack_Data, INC_PC_WB : STD_LOGIC_VECTOR (31 DOWNTO 0);
     SIGNAL EA : STD_LOGIC_VECTOR (19 DOWNTO 0); -- STILL NEEDS WORK (EFFECTIVE ADDRESS IS 20 BITS!)
 
     -- immediate value forwarded from the fetch stage
@@ -343,7 +349,7 @@ BEGIN
     FETCH : FetchStage PORT MAP(CLK, Memory_Out_WB, INC_PC_ID, ALU_Result_MEM, Memory_Data_EX, Mem_Init, Call_EX, Branch_EX, Branch_MEM, Mem_2PC_WB, Flags_MEM(0), Init, PC_Init, In_Inst, Instruction_IF, Immediate_Val_IF, INC_PC_IF);
 
     -- ifid-register port mapping
-    IFID : IFIDRegister PORT MAP(INT_EX,INT_MEM,INT_WB,Call_EX, Jump, RST_Reg, CLK, RST, INT, IFIDEnable, INC_PC_IF, Instruction_IF, Immediate_Val_IF, RST_ID, INT_ID, INC_PC_ID, Op_Code_ID, Rdst_ID, Rsrc1_ID, Rsrc2_ID, Immediate_Val_ID);
+    IFID : IFIDRegister PORT MAP(INT_EX, INT_MEM, INT_WB, Call_EX, Jump, RST_Reg, CLK, RST, INT, IFIDEnable, INC_PC_IF, Instruction_IF, Immediate_Val_IF, RST_ID, INT_ID, INC_PC_ID, Op_Code_ID, Rdst_ID, Rsrc1_ID, Rsrc2_ID, Immediate_Val_ID);
 
     -- decode stage port mapping
     DECODE : DecodeStage PORT MAP(
@@ -359,12 +365,12 @@ BEGIN
 
     -- execute stage port mapping
     EXECUTE : ExecuteStage PORT MAP(
-        Op_Code_EX, Rdst_EX, Rsrc1_EX, Rsrc2_EX, Rdst_MEM, Rdst_WB, Register_Write_MEM, Register_Write_WB, Immediate_EX, Protect_Write_EX, Protect_Val_EX, Write_Flag_EX, Stack_EX, Stack_MEM, RTI_WB, Swap_MEM, Memory_Out_WB(2 DOWNTO 0), ALU_Result_MEM, WriteBack_Data, Read_Data1_EX, Read_Data2_EX, Immediate_Val_ID, EA, RST_Reg, RST_MEM,
-        ALU_Result_EX, Protect_State_EX, Flags_EX, Stack_Pointer_EX, Memory_Data_EX);
+        Op_Code_EX, Rdst_EX, Rsrc1_EX, Rsrc2_EX, Rdst_MEM, Rdst_WB, Register_Write_MEM, Register_Write_WB, Immediate_EX, Protect_Write_EX, Protect_Val_EX, Write_Flag_EX, Stack_EX, Stack_MEM, RTI_WB, Swap_MEM, Memory_Out_WB(2 DOWNTO 0), ALU_Result_MEM, WriteBack_Data, Read_Data1_EX, Read_Data2_EX, Immediate_Val_ID, EA, RST_Reg, RST_MEM, Push_INT_PC_EX, Push_INT_PC_MEM,INC_PC_EX,INC_PC_WB,
+        ALU_Result_EX, Protect_State_EX, Flags_EX, Stack_Pointer_EX, Memory_Data_EX,INC_PC_EX_OUT);
 
     -- exmem-register port mapping
     EXMEM : EXMEMRegister PORT MAP(
-        CLK, RST_Reg, RTI_EX, Swap_EX, Register_Write_EX, Mem_2PC_EX, Mem_2Reg_EX, Push_EX, Stack_EX, Push_INT_PC_EX, Call_EX, Mem_Write_EX, Mem_Read_EX, Branch_EX, Port_Write_EX, Port_Read_EX, RST_EX, INT_EX, Stack_Pointer_EX, INC_PC_EX, ALU_Result_EX, Memory_Data_EX, Flags_EX, Rdst_EX, Protect_State_EX,
+        CLK, RST_Reg, RTI_EX, Swap_EX, Register_Write_EX, Mem_2PC_EX, Mem_2Reg_EX, Push_EX, Stack_EX, Push_INT_PC_EX, Call_EX, Mem_Write_EX, Mem_Read_EX, Branch_EX, Port_Write_EX, Port_Read_EX, RST_EX, INT_EX, Stack_Pointer_EX, INC_PC_EX_OUT, ALU_Result_EX, Memory_Data_EX, Flags_EX, Rdst_EX, Protect_State_EX,
         RTI_MEM, Swap_MEM, Register_Write_MEM, Mem_2PC_MEM, Mem_2Reg_MEM, Push_MEM, Stack_MEM, Push_INT_PC_MEM, Call_MEM, Mem_Write_MEM, Mem_Read_MEM, Branch_MEM, Port_Write_MEM, Port_Read_MEM, RST_MEM, INT_MEM, Stack_Pointer_MEM, INC_PC_MEM, ALU_Result_MEM, Memory_Data_MEM, Flags_MEM, Rdst_MEM, Protect_State_MEM);
 
     -- memory stage port mapping
@@ -372,8 +378,8 @@ BEGIN
 
     -- memwb-register port mapping
     MEMWB : MEMWBRegister PORT MAP(
-        CLK, RST_Reg, RTI_MEM, Register_Write_MEM, Mem_2PC_MEM, Mem_2Reg_MEM, Push_INT_PC_MEM, Port_Read_MEM, RST_MEM, INT_MEM, Port_Out, Memory_Out, ALU_Result_MEM, Rdst_MEM,
-        RTI_WB, Register_Write_WB, Mem_2PC_WB, Mem_2Reg_WB, Push_INT_PC_WB, Port_Read_WB, RST_WB, INT_WB, Port_Out_WB, Memory_Out_WB, ALU_Result_WB, Rdst_WB);
+        CLK, RST_Reg, RTI_MEM, Register_Write_MEM, Mem_2PC_MEM, Mem_2Reg_MEM, Push_INT_PC_MEM, Port_Read_MEM, RST_MEM, INT_MEM, Port_Out, Memory_Out, ALU_Result_MEM, Rdst_MEM, INC_PC_MEM,
+        RTI_WB, Register_Write_WB, Mem_2PC_WB, Mem_2Reg_WB, Push_INT_PC_WB, Port_Read_WB, RST_WB, INT_WB, Port_Out_WB, Memory_Out_WB, ALU_Result_WB, Rdst_WB, INC_PC_WB);
 
     -- write back stage port mapping
     WRITEBACK : WriteBackStage PORT MAP(Memory_Out_WB, ALU_Result_WB, Port_Out_WB, Port_Read_WB, Mem_2Reg_WB, WriteBack_Data);
