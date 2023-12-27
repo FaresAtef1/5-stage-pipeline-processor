@@ -2,6 +2,7 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 ENTITY ALUControlUnit IS
     PORT (
+    RTI_Mem : IN STD_LOGIC;
         OpCode : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
         ALUOP : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
         Push_INT_PC_EX : IN STD_LOGIC;
@@ -11,6 +12,7 @@ ENTITY ALUControlUnit IS
 END ALUControlUnit;
 
 ARCHITECTURE ALUControlUnitArch OF ALUControlUnit IS
+    SIGNAL OpCodeTemp : STD_LOGIC_VECTOR(4 DOWNTO 0);
 BEGIN
     -- WITH OpCode SELECT
     --     ALUOP <=
@@ -47,6 +49,7 @@ BEGIN
     --     "0000" WHEN OTHERS;
 
     ALUOP <=
+        "1110" WHEN RTI_Mem ='1' ELSE 
         "1111" WHEN Push_INT_PC_EX ='1' OR Push_INT_PC_Mem = '1' ELSE
         "0000" WHEN OpCode = "00000" ELSE-- NOP
         "0000" WHEN OpCode = "00001" ELSE-- IN

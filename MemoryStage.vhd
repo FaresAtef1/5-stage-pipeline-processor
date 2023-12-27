@@ -7,6 +7,7 @@ USE IEEE.math_real.ALL;
 
 ENTITY MemoryStage IS
     PORT (
+        Protect_Val_Mem,Protect_Write_Mem : IN STD_LOGIC;
         Clk : IN STD_LOGIC;
         MemWrite : IN STD_LOGIC;
         MemRead : IN STD_LOGIC;
@@ -47,6 +48,7 @@ ARCHITECTURE MemoryStageArch OF MemoryStage IS
     END COMPONENT MemoryAddressDecoder;
     COMPONENT WriteDataDecoder IS
         PORT (
+            Protect_Val_Mem, Protect_Write_Mem : IN STD_LOGIC;
             R1 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
             PC_inc : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
             Flags : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -88,6 +90,8 @@ BEGIN
     RD_EN <= MemRead  AND (NOT Clk);
     Jump <= Branch_Mem AND Flags(0);
     WDD : WriteDataDecoder PORT MAP(
+        Protect_Val_Mem => Protect_Val_Mem,
+        Protect_Write_Mem => Protect_Write_Mem,
         R1 => R1,
         PC_inc => PC_inc,
         Flags => Flags,

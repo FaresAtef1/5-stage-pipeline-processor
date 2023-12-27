@@ -2,6 +2,7 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 ENTITY ExecuteStage IS
     PORT (
+        RTI_Mem : IN STD_LOGIC;
         Op_Code : IN STD_LOGIC_VECTOR (4 DOWNTO 0);
         Rdst, Rsrc1, Rsrc2 : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
         Rdst_Mem, Rdst_WB : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
@@ -48,6 +49,7 @@ ARCHITECTURE ArchExecuteStage OF ExecuteStage IS
     END COMPONENT ALU;
     COMPONENT ALUControlUnit IS
         PORT (
+        RTI_Mem : IN STD_LOGIC;
             OpCode : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
             ALUOP : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
             Push_INT_PC_EX : IN STD_LOGIC;
@@ -106,7 +108,7 @@ ARCHITECTURE ArchExecuteStage OF ExecuteStage IS
     SIGNAL Read_Enable : STD_LOGIC;
     SIGNAL Reset_Regs : STD_LOGIC;
 BEGIN
-    AC1 : ALUControlUnit PORT MAP(Op_Code, ALU_Sel, Push_INT_PC_EX, Push_INT_PC_Mem);
+    AC1 : ALUControlUnit PORT MAP(RTI_Mem,Op_Code, ALU_Sel, Push_INT_PC_EX, Push_INT_PC_Mem);
     A1 : ALU PORT MAP(FR_Out(2), ALU_Sel, ALU_Op1, ALU_Op2, ALU_Result, ALU_Flags);
     F1 : ForwardingUnit PORT MAP(Swap_Mem,Rdst_Mem, Rdst_WB, Register_Write_Mem, Register_Write_WB, Rsrc1, Rsrc2, Forward_Data1, Forward_Data2);
     PM1 : Memory GENERIC MAP(1, 12, 1) PORT MAP(Reset_Regs, Protect_Write, Read_Enable, Protect_Address(11 DOWNTO 0), Protect_Val, Protect_Out); --- protect memory

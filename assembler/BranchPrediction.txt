@@ -96,7 +96,6 @@ add wave -position insertpoint sim:/processor/FETCH/PCD0/*
 add wave -position insertpoint sim:/processor/FETCH/PC0/*
 add wave -position insertpoint sim:/processor/MEMORY/MAD/*
 add wave -position insertpoint sim:/processor/EXECUTE/F1/*
-add wave -position insertpoint sim:/processor/MEMORY/MEM/*
 force -freeze PC_Init 1 0 
 force -freeze Init 0 0 
 run 100 ns

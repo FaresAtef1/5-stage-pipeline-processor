@@ -36,6 +36,6 @@ doFile.writelines([
     "force -freeze PC_Init 0 0 \n",
 ])
 
-doFile.writelines([
-    "\n",f"run {100*len(binaryInstructions)} ns"
-])
+# doFile.writelines([
+#     "\n",f"run {100*len(binaryInstructions)} ns"
+# ])

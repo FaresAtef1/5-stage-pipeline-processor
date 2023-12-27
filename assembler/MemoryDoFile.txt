@@ -1,0 +1,128 @@
+quit -sim
+vcom Processor.vhd
+vsim -t ns Processor
+force -freeze CLK 1 0, 0 {50 ns} -r 100
+force -freeze PC_Init 1 0 
+force -freeze Mem_Init 1 0 
+force -freeze RST_Reg 1 0 
+force -freeze Init 0 0 
+force -freeze RST 0 0  
+force -freeze INT 0 0 
+force -freeze Port_Input "10000001000000111000000100000011" 0 
+run 100 ns
+force -freeze PC_Init 0 0 
+force -freeze Mem_Init 0 0
+run 100 ns
+force -freeze RST_Reg 0 0 
+force -freeze Init 1 0 
+force -freeze IN_Inst "0000101000000000" 0 
+run 100 ns
+force -freeze IN_Inst "0101001100000000" 0 
+run 100 ns
+force -freeze IN_Inst "1111111111111111" 0 
+run 100 ns
+force -freeze IN_Inst "0101010000000000" 0 
+run 100 ns
+force -freeze IN_Inst "1111001100100000" 0 
+run 100 ns
+force -freeze IN_Inst "0101000100000000" 0 
+run 100 ns
+force -freeze IN_Inst "0000000011110101" 0 
+run 100 ns
+force -freeze IN_Inst "1100100100000000" 0 
+run 100 ns
+force -freeze IN_Inst "1100101000000000" 0 
+run 100 ns
+force -freeze IN_Inst "0100100100000000" 0 
+run 100 ns
+force -freeze IN_Inst "0100101000000000" 0 
+run 100 ns
+force -freeze IN_Inst "1101001000000000" 0 
+run 100 ns
+force -freeze IN_Inst "0000001000000000" 0 
+run 100 ns
+force -freeze IN_Inst "1101000100000000" 0 
+run 100 ns
+force -freeze IN_Inst "0000001000000010" 0 
+run 100 ns
+force -freeze IN_Inst "0101101100000000" 0 
+run 100 ns
+force -freeze IN_Inst "0000001000000010" 0 
+run 100 ns
+force -freeze IN_Inst "0101110000000000" 0 
+run 100 ns
+force -freeze IN_Inst "0000001000000000" 0 
+run 100 ns
+force -freeze IN_Inst "1101001100000000" 0 
+run 100 ns
+force -freeze IN_Inst "0000000011110101" 0 
+run 100 ns
+force -freeze IN_Inst "1101110000000000" 0 
+run 100 ns
+force -freeze IN_Inst "1101010000000000" 0 
+run 100 ns
+force -freeze IN_Inst "0000000011110101" 0 
+run 100 ns
+force -freeze IN_Inst "0101110100000000" 0 
+run 100 ns
+force -freeze IN_Inst "0000000011110101" 0 
+run 100 ns
+force -freeze IN_Inst "1110010000000000" 0 
+run 100 ns
+force -freeze IN_Inst "0101110100000000" 0 
+run 100 ns
+force -freeze IN_Inst "0000000011110101" 0 
+run 100 ns
+add wave -position insertpoint sim:/processor/*
+add wave -position insertpoint sim:/processor/DECODE/C1/*
+add wave -position insertpoint sim:/processor/FETCH/PCD0/*
+add wave -position insertpoint sim:/processor/FETCH/PC0/*
+add wave -position insertpoint sim:/processor/MEMORY/MAD/*
+add wave -position insertpoint sim:/processor/EXECUTE/F1/*
+force -freeze PC_Init 1 0 
+force -freeze Init 0 0 
+run 100 ns
+force -freeze PC_Init 0 0 
+force -freeze sim:/processor/Port_Input 16#0CDAFE19 0
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run

@@ -55,7 +55,7 @@ for inst in instructions:
     instParts=re.split(r'[,\s]+',inst)
     instructionBits=""
     EA="00000000000000000000"
-    opcode=(instructionsOpCodes.get(instParts[0]))
+    opcode=(instructionsOpCodes.get(instParts[0].upper()))
     if(opcode==None):
         print(f"error happened in {inst}")
         continue
