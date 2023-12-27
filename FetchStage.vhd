@@ -6,6 +6,7 @@ USE ieee.std_logic_textio.ALL;
 
 ENTITY FetchStage IS
     PORT (
+        RST : IN STD_LOGIC;
         CLK : IN STD_LOGIC;
         Mem_Out, PC_INC_Decode, ALU_Res : IN STD_LOGIC_VECTOR (31 DOWNTO 0); -- PC_INC is PC + 1 from Decode Stage
         RDst_Exec : IN STD_LOGIC_VECTOR (31 DOWNTO 0);

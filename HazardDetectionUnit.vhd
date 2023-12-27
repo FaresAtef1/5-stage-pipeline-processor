@@ -17,7 +17,7 @@ ARCHITECTURE ArchHazardDetctionUnit OF HazardDetctionUnit IS
 BEGIN
     PROCESS (MemRead, INRExec, SwapExec, MemToPCExec, MemToPCMem, MemToPCWB, RSrc1, RSrc2, ExecRdst)
     BEGIN
-        IF MemToPCExec = '1' OR MemToPCMem = '1' OR MemToPCWB = '1' OR SwapExec = '1' THEN
+        IF MemToPCExec = '1' OR MemToPCMem = '1'  OR SwapExec = '1' THEN
             Hazard <= '1'; -- call please take a look!
         ELSIF (INRExec = '1') AND ((RSrc1 = ExecRdst) OR (RSrc2 = ExecRdst)) THEN -- INRExec --> To handle IN R1; Add R2, R1, R3
             Hazard <= '1';
