@@ -6,6 +6,7 @@ USE ieee.std_logic_textio.ALL;
 
 ENTITY DecodeStage IS
     PORT (
+        Big_Reset : IN STD_LOGIC;
         RTI_Exec : IN STD_LOGIC;
         CLK : IN STD_LOGIC;
         Op_Code : IN STD_LOGIC_VECTOR (4 DOWNTO 0);
@@ -79,6 +80,7 @@ ARCHITECTURE ArchDecodeStage OF DecodeStage IS
     END COMPONENT ControlUnit;
     COMPONENT RegFile IS
         PORT (
+            Big_Reset : IN STD_LOGIC;
             CLK : IN STD_LOGIC;
             RESET, RegWrite : IN STD_LOGIC;
             Reg1_Num, Reg2_Num, Write_Reg : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
@@ -104,7 +106,7 @@ ARCHITECTURE ArchDecodeStage OF DecodeStage IS
         RSRC1; -- For instruction cmp
     H1 : HazardDetctionUnit PORT MAP(MemReadExec, INRExec, SwapExec, MemToPCExec, MemToPCMem, MemToPCWB, ImmediateExec, ReadReg1, ReadReg2, ExecRdst, Hazard_Sig);
     C1 : ControlUnit PORT MAP(RTI_Exec,Op_Code, SwapExec, ResetExec, INTExec, INTMem, INTWB,Hazard_Sig,ImmediateExec, CU_Signals(17), CU_Signals(16), CU_Signals(15), CU_Signals(14), CU_Signals(13), CU_Signals(12), CU_Signals(11), CU_Signals(10), CU_Signals(9), CU_Signals(8), CU_Signals(7), CU_Signals(6), CU_Signals(5), CU_Signals(4), CU_Signals(3), CU_Signals(2), CU_Signals(1), CU_Signals(0));
-    R1 : RegFile PORT MAP(CLK, Reset, RegWriteWB, ReadReg1, ReadReg2, Write_Reg, Write_Data, Read_Data1_SIG, Read_Data2_SIG, Reg0_Sig, Reg1_Sig, Reg2_Sig, Reg3_Sig, Reg4_Sig, Reg5_Sig, Reg6_Sig, Reg7_Sig);
+    R1 : RegFile PORT MAP(Big_Reset,CLK, Reset, RegWriteWB, ReadReg1, ReadReg2, Write_Reg, Write_Data, Read_Data1_SIG, Read_Data2_SIG, Reg0_Sig, Reg1_Sig, Reg2_Sig, Reg3_Sig, Reg4_Sig, Reg5_Sig, Reg6_Sig, Reg7_Sig);
     PROCESS (CLK, Read_Data1_SIG, Read_Data2_SIG, Hazard_Sig, CU_Signals, Reset, ResetExec, ResetMem, ResetWB, INT, INTExec, INTMem, INTWB, MemReadExec, SwapExec, INRExec, MemToPCExec, ImmediateExec, MemToPCMem, MemToPCWB, RegWriteWB, RDst, RSrc1, RSrc2, Write_Reg, ExecRdst, ExecRsrc1, Op_Code, Write_Data, Reg0_Sig, Reg1_Sig, Reg2_Sig, Reg3_Sig, Reg4_Sig, Reg5_Sig, Reg6_Sig, Reg7_Sig)
     BEGIN
         -- IF Hazard_Sig = '1' AND (INT = '0' AND INTExec = '0' AND INTMem = '0' AND INTWB = '0') THEN

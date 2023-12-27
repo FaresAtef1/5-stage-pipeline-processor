@@ -18,14 +18,14 @@ ARCHITECTURE RotateArch OF Rotate IS
 BEGIN
     PROCESS (Data,Amount,Direction)
     BEGIN
-        IF (Amount /= x"00000000" AND Enable='1') THEN
+        IF (NOT(Amount = x"00000000") AND Enable='1') THEN
             IF (Direction = '0') THEN
                 RData <= Data(32 - to_integer(unsigned(Amount(4 DOWNTO 0))) DOWNTO 0) & Data(32 DOWNTO 32 - to_integer(unsigned(Amount(4 DOWNTO 0))) + 1);
             ELSE
                 RData <= Data(to_integer(unsigned(Amount(4 DOWNTO 0))) - 1 DOWNTO 0) & Data(32 DOWNTO to_integer(unsigned(Amount(4 DOWNTO 0))));
             END IF;
-        ELSE
-            RData <= Data;
+        -- ELSE
+        --     RData <= Data;
         END IF;
     END PROCESS;
 

@@ -53,6 +53,7 @@ ARCHITECTURE ArchProcessor OF Processor IS
 
     COMPONENT DecodeStage IS
         PORT (
+            Big_Reset : IN STD_LOGIC;
             RTI_Exec : IN STD_LOGIC;
             CLK : IN STD_LOGIC;
             Op_Code : IN STD_LOGIC_VECTOR (4 DOWNTO 0);
@@ -348,7 +349,7 @@ BEGIN
 
     -- decode stage port mapping
     DECODE : DecodeStage PORT MAP(
-        RTI_Exec => RTI_EX, CLK => CLK, Op_Code => Op_Code_ID, Reset => PC_Init, ResetExec => RST_ID, ResetMem => RST_MEM, ResetWB => RST_WB, INT => INT_ID, INTExec => INT_EX, INTMem => INT_MEM, INTWB => INT_WB, MemReadExec => Mem_Read_EX, SwapExec => Swap_EX, INRExec => Port_Read_EX, MemToPCExec => Mem_2PC_EX, ImmediateExec => Immediate_EX, MemToPCMem => Mem_2PC_MEM, MemToPCWB => Mem_2PC_WB, RegWriteWB => Register_Write_WB, RDst => Rdst_ID,
+        Big_Reset => RST,RTI_Exec => RTI_EX, CLK => CLK, Op_Code => Op_Code_ID, Reset => PC_Init, ResetExec => RST_ID, ResetMem => RST_MEM, ResetWB => RST_WB, INT => INT_ID, INTExec => INT_EX, INTMem => INT_MEM, INTWB => INT_WB, MemReadExec => Mem_Read_EX, SwapExec => Swap_EX, INRExec => Port_Read_EX, MemToPCExec => Mem_2PC_EX, ImmediateExec => Immediate_EX, MemToPCMem => Mem_2PC_MEM, MemToPCWB => Mem_2PC_WB, RegWriteWB => Register_Write_WB, RDst => Rdst_ID,
         RSrc1 => Rsrc1_ID, RSrc2 => Rsrc2_ID, Write_Reg => Rdst_WB, ExecRdst => Rdst_EX, ExecRsrc1 => Rsrc1_EX, Write_Data => WriteBack_Data, Register_Write => Register_Write_ID, Branch => Branch_ID, Immediate => Immediate_ID, Mem_Read => Mem_Read_ID, Mem_Write => Mem_Write_ID, Mem_2Reg => Mem_2Reg_ID, Port_Write => Port_Write_ID,
         Port_Read => Port_Read_ID, Protect_Write => Protect_Write_ID, Protect_Val => Protect_Val_ID, Write_Flag => Write_Flag_ID, Stack => Stack_ID, Push => Push_ID, Call => Call_ID, Mem_2PC => Mem_2PC_ID, SWAP => SWAP_ID, RTI => RTI_ID, Push_INT_PC => Push_INT_PC_ID, Hazard => IFIDEnable, InstRdst => Inst_Rdst_ID, InstRsrc1 => Inst_Rsrc1_ID, InstRscr2 => Inst_Rsrc2_ID,
         Read_Data1 => Read_Data1_ID, Read_Data2 => Read_Data2_ID, Reg0 => Reg0_ID, Reg1 => Reg1_ID, Reg2 => Reg2_ID, Reg3 => Reg3_ID, Reg4 => Reg4_ID, Reg5 => Reg5_ID, Reg6 => Reg6_ID, Reg7 => Reg7_ID, Op_Code_Out => Op_Code_ID_Out);
