@@ -69,7 +69,7 @@ force -freeze IN_Inst "0101011000000000" 0
 run 100 ns
 force -freeze IN_Inst "0000001000000000" 0 
 run 100 ns
-force -freeze IN_Inst "1110111000000000" 0 
+force -freeze IN_Inst "1111011000000000" 0 
 run 100 ns
 force -freeze IN_Inst "1001000100000000" 0 
 run 100 ns
@@ -120,3 +120,60 @@ force -freeze PC_Init 1 0
 force -freeze Init 0 0 
 run 100 ns
 force -freeze PC_Init 0 0 
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+force -freeze sim:/processor/INT 1 0
+run
+noforce sim:/processor/INT
+force -freeze sim:/processor/INT 0 0
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+
