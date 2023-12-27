@@ -2,6 +2,7 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 ENTITY EXMEMRegister IS
     PORT (
+        Protect_Val, Protect_Write : IN STD_LOGIC;
         Clk : IN STD_LOGIC;
         RST_Reg : IN STD_LOGIC;
         RTI : IN STD_LOGIC;
@@ -50,7 +51,8 @@ ENTITY EXMEMRegister IS
         Memory_Data_Out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
         Flags_Out : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
         Rdst_Out : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-        Protect_State_Out : OUT STD_LOGIC
+        Protect_State_Out : OUT STD_LOGIC;
+        Protect_Val_Out, Protect_Write_Out : OUT STD_LOGIC
     );
 END ENTITY EXMEMRegister;
 
@@ -60,6 +62,8 @@ BEGIN
     BEGIN
 
         IF RST_Reg = '1' THEN
+            Protect_Val_Out <= '0';
+            Protect_Write_Out <= '0';
             RTI_Out <= '0';
             Register_Write_Out <= '0';
             Mem_2PC_Out <= '0';
@@ -84,6 +88,8 @@ BEGIN
             Protect_State_Out <= '0';
             Swap_Out <= '0';
         ELSIF RISING_EDGE(Clk) THEN
+            Protect_Val_Out <= Protect_Val;
+            Protect_Write_Out <= Protect_Write;
             RTI_Out <= RTI;
             Register_Write_Out <= Register_Write;
             Mem_2PC_Out <= Mem_2PC;

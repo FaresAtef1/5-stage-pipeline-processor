@@ -7,6 +7,7 @@ USE IEEE.math_real.ALL;
 
 ENTITY WriteDataDecoder IS
     PORT (
+        Protect_Val_Mem, Protect_Write_Mem : IN STD_LOGIC;
         R1 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
         PC_inc : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
         Flags : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -18,15 +19,18 @@ END WriteDataDecoder;
 
 ARCHITECTURE WriteDataDecoderArch OF WriteDataDecoder IS
 BEGIN
-    PROCESS (R1, PC_inc, Flags, Push_INT_PC, Push_INT_PC_WB, Call)
+    PROCESS (Protect_Val_MEM,Protect_Write_MEM,R1, PC_inc, Flags, Push_INT_PC, Push_INT_PC_WB, Call)
     BEGIN
-        
+
         IF (Call = '1' OR Push_INT_PC = '1') THEN
-            write_data_out <= PC_inc after 10 ns;
+            write_data_out <= PC_inc;
         ELSIF Push_INT_PC_WB = '1' THEN
-            write_data_out <= ("00000000000000000000000000000") & Flags(2 DOWNTO 0) after 10 ns;
+            write_data_out <= ("00000000000000000000000000000") & Flags(2 DOWNTO 0);
+
+        ELSIF Protect_Val_Mem = '0' AND Protect_Write_Mem = '1' THEN
+            write_data_out <= (OTHERS => '0');
         ELSE
-            write_data_out <= R1 after 10 ns;
+            write_data_out <= R1;
         END IF;
     END PROCESS;
 
