@@ -18,7 +18,7 @@
 - [x] ALU Control
 
 - [x] Modify Control Unit
-- [ ] Modify Hazard Detection Unit
+- [x] Modify Hazard Detection Unit
 - [x] Fetch Stage
 - [x] Decode Stage
 - [x] Execute Stage
@@ -26,5 +26,5 @@
 - [x] WB Stage
 - [x] Change the decode stage after the added Push_INT_PC signal in the control unit
 - [x] Change Reset of the Reg file
-- [ ] Add port forwarding to the forwarding unit
-- [ ] Don't forward with compare 
+- [x] Add port forwarding to the forwarding unit
+- [x] Don't forward with compare 
