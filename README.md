@@ -43,8 +43,10 @@ EA	; Effective address (20 bit)
 Imm	; Immediate Value (16 bit)
 ```
 
-Instruction             |  Op Code
-:-------------------------:|:-------------------------:
+<div align="center">
+ 
+ Instruction | Op Code 
+:----------:|:----------:
 NOP	| 00000
 NOT Rdst	| 10000
 NEG Rdst	| 10001
@@ -75,6 +77,8 @@ JMP Rdst	| 11110
 CALL Rdst	| 11111
 RET	| 01100
 RTI	| 01101
+
+</div>
 
 ### 4) Instruction Bits Details
 ```
