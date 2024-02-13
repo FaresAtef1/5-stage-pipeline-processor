@@ -88,9 +88,9 @@ Rs [7-5]
 Rt [4-2]
 Unused [1-0]
 ```
-In case of using immediate values, which are 16-bits long we use the next slot in memory for the retrieval of that value.
-
-Also, in the case of using an effective address which is 20-bits long we use the last 4 bits in the instruction, since it is unused, along with the 16-bits available in the next memory slot to be able to deliver a 20-bit value for execution.
+> [!Important]
+> In case of using immediate values, which are 16-bits long we use the next slot in memory for the retrieval of that value.
+> Also, in the case of using an effective address which is 20-bits long we use the last 4 bits in the instruction, since it is unused, along with the 16-bits available in the next memory slot to be able to deliver a 20-bit value for execution.
 
 
 ### 5) Control Signals
@@ -160,7 +160,8 @@ For Data We have faced the following:
 For Control We have faced the following:
 -	Incorrect Prediction, for that: We flush the incorrectly fetched instructions.
 
-N.B., we use a static (not taken) branch prediction approach.
+> [!Note]
+> we use a static (not taken) branch prediction approach.
 
 ## ©️Developers
 
